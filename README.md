@@ -131,7 +131,7 @@ The files you just copied are:
     - `arun_idl_gdev_001` a large number of IDL plotting routines that work on annual model output files.
     After the model has run, you can start IDL and then copy and paste individual routines from `arun_idl_gdev_001` or enter `@arun_idl_gdev_001` directly to execute all the commands in the file and plot everything.
     - `gdev.001.slurm` the batch execution file you submit to the scheduler to run the model.
-    (More info on the slurm scheduler on greenplanet here.)
+    (More info on the slurm scheduler on greenplanet [here](https://ps.uci.edu/greenplanet/).)
     You can submit the job to the scheduler with the sbatch command, i.e., when in greenplanet in the main node, type sbatch `./gdev.001.slurm`.
     - `AAverage_gdev_001` script to cut and paste to average the last 20 years of the simulation (model years 291–310 corresponds to NCEP forcing for the 1990–2009 period)
 3. In `gdev.001.slurm`, edit the job name (twice) and and the directory path.
