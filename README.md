@@ -27,7 +27,7 @@ This improves Arctic ocean circulation, and provides higher resolution in the wa
 
 ## Running CESM and plotting data
 There is a number of key directories containing all the files needed to run the model and plot figures of the output.
-On greenplanet (more info on greenplanet here), there are 4 main directories, each with a set of subdirectories and files, serving a specific purpose:
+On greenplanet (more info on greenplanet [here](https://ps.uci.edu/greenplanet/)), there are 4 main directories, each with a set of subdirectories and files, serving a specific purpose:
 - the Model code – contains the model FORTRAN code, i.e. the algorithms that define the model.
 - the Model output – contains the NetCDF files that the model outputs.
 - the Plotting code – contains the IDL code for plotting.
