@@ -121,8 +121,17 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
 - Note 2: There is a `.../archive/gdev.xyz.001/rest/` subdirectory containing files for restarting the model or starting a branch run.
 
 ### Starting a new CESM simulation (and use git to version-control it)
-1. Make a new local directory on your laptop called `xyz.abc`, except replace `xyz` with your initials and `abc` with the run number.
-    For example my first run would be `bp.001`.
+
+1. If it is your first ever run, fork this repository on github (click the "Fork" button button at the top of this webpage) and clone your fork somewhere on your laptop.
+    I recommend making a `Projects` directory in your laptop's `$HOME` directory and cloning repositories there.
+    In my case, I just typed:
+    ```
+    cd ~/Projects
+    git clone https://github.com/briochemc/Lets_play_with_CESM.git
+    ```
+
+1. For each new run, make a new local directory on your laptop called `xyz.abc`, except replace `xyz` with your initials and `abc` with the run number.
+    For example my first run was `bp.001`.
 
 1. Copy `xyz.abc_12_12.slurm` from `SampleNotes` to your `xyz.abx` directory, rename it and edit lines 6 and 22 to change the job name and the directory path.
     (The `SampleNotes` directory is part of this repository - I copied it from greenplanet for convenience - see details about the files it contains below if you want.)
@@ -165,11 +174,8 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
     Ideally this would go in a dotfile in your setup so that there is no need to load these modules every single time.
     (Although it might be good for remembering what you are actualling using?)
 
-1. Create a `xyz.abc` directory in your `cesm_runs` directory (in `/DFS-L/SCRATCH/moore/USERID/cesm_runs/` to be precise).
-    In other words, type the following on the CLI connected to greenplanet:
-    ```
-    mkdir /DFS-L/SCRATCH/moore/USERID/cesm_runs/xyz.abc
-    ```
+1. Copy the contents your edited `NOTES_12_12` and paste them in greenplanet file to build, compile, and run your first job.
+    Do not plot right away as you need to setup the directories for plotting (right?).
 
 1. Then, copy your newly named and edited batch script `xyz.abc_12_12.slurm` from your laptop to this new `xyz.abc` directory on greenplanet.
     (This could probably be improved by using git for it?)
@@ -185,8 +191,6 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
     cp2gp2_cesmruns xyz.abc_12_12.slurm xyz.abc/
     ```
 
-1. Copy the contents your edited `NOTES_12_12` and paste them in greenplanet file to build, compile, and run your first job.
-    Do not plot right away as you need to setup the directories for plotting (right?).
 
 1. Once your job has been submitted, you can directly type the following in the console:
     - `squeue` to list all jobs currently running on greenplanet

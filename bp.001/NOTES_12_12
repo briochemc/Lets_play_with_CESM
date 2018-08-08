@@ -39,6 +39,9 @@ cp Makefile ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/Tools/Makefile
 cd ${SCRIPT_DIR_BASE_DST}/${CASE_DST}
 ./xmlchange -file env_build.xml -id OCN_TRACER_MODULES -val "iage ecosys"
 
+
+# STOP, copy over the IRF mods to /SourceMods/src.pop2
+
 # STOP, copy over edited ecosys_mod file to /SourceMods/src.pop2
 
 ./xmlchange -file env_run.xml -id STOP_OPTION -val nmonth
