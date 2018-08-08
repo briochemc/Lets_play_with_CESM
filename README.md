@@ -135,7 +135,7 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
 1. There are samples directories with files to setup and run the model on 12 of the 12cpu nodes in the `nes2.8` queue at `/DFS-L/DATA/moore/jkmoore/CESM1.98/SourceCode_gx3v7/SampleNotes/`.
     (The old queues, `moore_fast`, `moore_fast6`, and `moore_fast8`, are now called `nes2.8` and `sib2.9` - no idea why)
     I copied all the files from the `SampleNotes/` directory to an example `xyz.000` subdirectory of this repository.
-    You should copy those files for every new run of yours, using your initials instead of `xyz`, and starting from `001` for your first run, `002` for the second, and so on.
+    You should copy those files into a subdirectory with a name of the form `xyz.abc` for every new run of yours , using your initials instead of `xyz`, and the run number instead of `abc` starting from `001` for your first run, `002` for the second, and so on.
     Among the files you just copied are:
 
     - `NOTES_12_12` a copy/paste script for starting a new job.
