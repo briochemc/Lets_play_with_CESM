@@ -121,54 +121,71 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
 - Note 2: There is a `.../archive/gdev.xyz.001/rest/` subdirectory containing files for restarting the model or starting a branch run.
 
 ### Starting a new CESM simulation (and use git to version-control it)
-1. Make a new local directory on your laptop called `xyz.001`, except replace `xyz` with your initials.
-    (The `001` is obviously for your first run, so don't forget to increment it for the next runs!)
+1. Make a new local directory on your laptop called `xyz.abc`, except replace `xyz` with your initials and `abc` with the run number.
+    For example my first run would be `bp.001`.
 
-1. Copy and paste the following to load the modules for the compilers, to read and write netcdf files, and to use IDL:
+1. Copy `xyz.abc_12_12.slurm` from `SampleNotes` to your `xyz.abx` directory, rename it and edit lines 6 and 22 to change the job name and the directory path.
+    (The `SampleNotes` directory is part of this repository - I copied it from greenplanet for convenience - see details about the files it contains below if you want.)
+    For example in my case and for my first run, the slurm file is renamed to `bp.001_12_12.slurm` and this is what the two lines look like after editing:
+
+    ```
+    #SBATCH --job-name=bp.001
+    cd /DFS-L/SCRATCH/moore/pasquieb/cesm_runs/bp.001
+    ```
+
+    This *slurm* file is a *batch* script that will be sent to greenplanet's job sheduler to start your CESM run.
+
+1. Copy `NOTES_12_12` (from `SampleNotes`), and edit `CCSMUSER`, the job name, and the length of the run (the number of months).
+    For example, for my first run (`bp.001`) I have the following lines 5, 6, and 45:
+
+    ```
+    setenv CCSMUSER             pasquieb
+    setenv CASE_DST             bp.001
+    ./xmlchange -file env_run.xml -id STOP_N      -val 1200
+    ```
+
+
+1. Open another CLI and connect via `ssh` to `gplogin2.ps.uci.edu` (`gplogin1` and `gplogin3` go to the old machine).
+    I personnaly have added the following to my laptop's `.bashrc`:
+    ```
+    gp2='ssh USERID@gplogin2.ps.uci.edu'
+    ```
+    so that I connect to `gplogin2` by simply typing in my laptop's CLI terminal:
+    ```
+    $ gp2
+    ```
+    Note: from off campus you have to connect using a VPN, see www.libraries.uci.edu, click on button on upper left of page that says "Connect from Off Campus" and install the VPN software on your home PC.
+    **DO NOT** download any illegal content while on the VPN! (music, movies, etc. - UCI will notice!)
+
+1. Copy-paste the following in the CLI prompt to load the modules for the compilers, to read and write netcdf files, and to use IDL:
     ```
     module load intel/2018.2 openmpi/3.0.1 netcdf/4.6.1
     ml idl
     ```
-    Ideally this would go in a dotfile in your setup so that there is no need to load these modules every single time. 
+    Ideally this would go in a dotfile in your setup so that there is no need to load these modules every single time.
     (Although it might be good for remembering what you are actualling using?)
 
-1. There are samples directories with files to setup and run the model on 12 of the 12cpu nodes in the `nes2.8` queue at `/DFS-L/DATA/moore/jkmoore/CESM1.98/SourceCode_gx3v7/SampleNotes/`.
-    (The old queues, `moore_fast`, `moore_fast6`, and `moore_fast8`, are now called `nes2.8` and `sib2.9` - no idea why)
-    I copied all the files from the `SampleNotes/` directory to an example `xyz.000` subdirectory of this repository.
-    You should copy those files into a subdirectory with a name of the form `xyz.abc` for every new run of yours , using your initials instead of `xyz`, and the run number instead of `abc` starting from `001` for your first run, `002` for the second, and so on.
-    Among the files you just copied are:
+1. Create a `xyz.abc` directory in your `cesm_runs` directory (in `/DFS-L/SCRATCH/moore/USERID/cesm_runs/` to be precise).
+    In other words, type the following on the CLI connected to greenplanet:
+    ```
+    mkdir /DFS-L/SCRATCH/moore/USERID/cesm_runs/xyz.abc
+    ```
 
-    - `NOTES_12_12` a copy/paste script for starting a new job.
-        This script contains code for both running the model and plotting output.
-        For this first step, you should just run the model.
+1. Then, copy your newly named and edited batch script `xyz.abc_12_12.slurm` from your laptop to this new `xyz.abc` directory on greenplanet.
+    (This could probably be improved by using git for it?)
+    I personnaly have a function for that in my local .bashrc that looks like
+    ```
+    function cp2gp2_cesmruns() # Copy to greenplanet cesm_runs (via gplogin2)
+    {
+      scp -r $1 pasquieb@gplogin2.ps.uci.edu:/DFS-L/SCRATCH/moore/pasquieb/cesm_runs/$2
+    }
+    ```
+    so that I only need to type
+    ```
+    cp2gp2_cesmruns xyz.abc_12_12.slurm xyz.abc/
+    ```
 
-    - `jkm.001_12_12.slurm` the batch execution file you submit to the scheduler to run the model.
-        (More info on the slurm scheduler on greenplanet [here](https://ps.uci.edu/greenplanet/).)
-        You can submit the job to the scheduler with the sbatch command, i.e., when in greenplanet in the main node, type
-
-        ```
-        $ sbatch ./jkm.001_12_12.slurm
-        ```
-
-    - `AAverage_gdev_001` script to cut and paste to average the last 20 years of the simulation.
-    Model years 291–310 corresponds to NCEP forcing for the 1990–2009 period (after five times through the (1948-2009) NCEP reanalysis forcings).
-
-    - `arun_idl_gdev_001` a large number of IDL plotting routines that work on annual model output files.
-        After the model has run, you can start IDL and then copy and paste individual routines from `arun_idl_gdev_001` or enter
-
-        ```
-        $ @arun_idl_gdev_001
-        ```
-
-        directly to execute all the commands in the file and plot everything.
-
-    - `arun_idl_min_001` IDL scripts, has just the most commonly used plotting routines.
-
-1. In `jkm.001_12_12.slurm`, edit the job name (twice) and and the directory path.
-
-1. In `NOTES_12_12`, edit `USERID`, the job name, and the length of the run (the number of years).
-
-1. Copy and paste up to the Comments to build? or compile? and run your first job.
+1. Copy the contents your edited `NOTES_12_12` and paste them in greenplanet file to build, compile, and run your first job.
     Do not plot right away as you need to setup the directories for plotting (right?).
 
 1. Once your job has been submitted, you can directly type the following in the console:
@@ -189,17 +206,50 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
         Note: commands to use on Yellowstone are different. Example use:
         `./gdev.jkm.001.submit`
 
-1. Connect via `ssh` to `gplogin2.ps.uci.edu` (`gplogin1` and `gplogin3` go to the old machine).
-    I personnaly have added the following to my laptop's `.bashrc`:
-    ```
-    gp2='ssh USERID@gplogin2.ps.uci.edu'
-    ```
-    so that I connect to `gplogin2` by simply typing in my laptop's CLI terminal:
-    ```
-    $ gp2
-    ```
-    Note: from off campus you have to connect using a VPN, see www.libraries.uci.edu, click on button on upper left of page that says "Connect from Off Campus" and install the VPN software on your home PC.
-    **DO NOT** download any illegal content while on the VPN! (music, movies, etc. - UCI will notice!)
+
+Other info: 
+
+1. Copy the sample files to your newly created `xyz.abc` directory.
+    Let me clarify what these *sample files* are.
+    In this repository, there is a `SampleNotes` directory, containing sample files to setup and run CESM on J. Keith Moore's queues on greenplanet.
+    Some of these sample files are listed below (this list is not exhaustive):
+
+    - `NOTES_12_12` a copy/paste script for starting a new job.
+        This script contains code for both running the model and plotting output.
+        For this first step, you should just run the model.
+
+    - `xyz.abc_12_12.slurm` the batch script you can submit to greenplanet's slurm scheduler to run CESM.
+        (More info on the slurm scheduler on greenplanet [here](https://ps.uci.edu/greenplanet/).)
+        You can submit the job to the scheduler with the `sbatch` command.
+        On greenplanet, on the main node, you would just type
+
+        ```
+        $ sbatch ./xyz.abc_12_12.slurm
+        ```
+
+        to submit your job.
+        (Again, you would replace `xyz` and `abc`.)
+
+    - `AAverage_gdev_001` script to cut and paste to average the last 20 years of the simulation.
+    Model years 291–310 corresponds to NCEP forcing for the 1990–2009 period (after five times through the (1948-2009) NCEP reanalysis forcings).
+
+    - `arun_idl_gdev_001` a large number of IDL plotting routines that work on annual model output files.
+        After the model has run, you can start IDL and then copy and paste individual routines from `arun_idl_gdev_001` or enter
+
+        ```
+        $ @arun_idl_gdev_001
+        ```
+
+        directly to execute all the commands in the file and plot everything.
+
+    - `arun_idl_min_001` IDL scripts, has just the most commonly used plotting routines.
+
+    A few notes:
+        The other files are for specific users and I can find the description in an old email but I am skipping those for now.
+        (The old queues, `moore_fast`, `moore_fast6`, and `moore_fast8`, are now called `nes2.8` and `sib2.9`.)
+        On Aug 07 2018, I copied all the files from greenplanet's `SampleNotes` directory to this repository, and made some edits to make it more user-friendly.
+        You should copy those files into a subdirectory with a name of the form `xyz.abc` for every new run of yours, using your initials instead of `xyz`, and the run number instead of `abc`.
+        For example, my second run would be `bp.002`.
 
 ### Other files (not sure what this is - have not used it yet)
 There are other files that will be copied to your scripts directory that you might need to edit in the future:

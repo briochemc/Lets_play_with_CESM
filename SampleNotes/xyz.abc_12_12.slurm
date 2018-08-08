@@ -1,9 +1,9 @@
 #!/bin/csh
 #===============================================================================
-#  This is a CCSM batch job script 
+#  This is a CCSM batch job script
 #===============================================================================
 
-#SBATCH --job-name=jkm.001
+#SBATCH --job-name=xyz.abc
 #SBATCH -p nes2.8
 #SBATCH -N 12
 #SBATCH --mem 8gb
@@ -12,14 +12,14 @@
 #SBATCH --ntasks-per-node=12
 #SBATCH -t 2160
 
-# ---------------------------------------- 
-# ---------------------------------------- 
+# ----------------------------------------
+# ----------------------------------------
 
 module load intel/2018.2  openmpi/3.0.1 netcdf/4.6.1
 
 
 
-cd /DFS-L/SCRATCH/moore/jkmoore/cesm_runs/jkm.001
+cd /DFS-L/SCRATCH/moore/USERID/cesm_runs/xyz.abc
 
 
 ./Tools/ccsm_check_lockedfiles || exit -1
@@ -68,7 +68,7 @@ echo "-------------------------------------------------------------------------"
 echo " CESM BUILDNML SCRIPT STARTING"
 echo " - To prestage restarts, untar a restart.tar file into $RUNDIR"
 
-./preview_namelists 
+./preview_namelists
 if ($status != 0) then
    echo "ERROR from preview namelist - EXITING"
    exit -1
@@ -106,7 +106,7 @@ endif
 if (`./check_input_data -inputdata $DIN_LOC_ROOT -check | grep "missing" | wc -l` > 0) then
    echo "Attempting to download missing data:"
    ./check_input_data -inputdata $DIN_LOC_ROOT -export
-endif 
+endif
 
 if (`./check_input_data -inputdata $DIN_LOC_ROOT -check | grep "missing" | wc -l` > 0) then
    echo " "
@@ -133,11 +133,11 @@ if (($GET_REFCASE == 'TRUE') && ($RUN_TYPE != 'startup') && ($CONTINUE_RUN == 'F
     echo "   and prestage the restart data to $RUNDIR manually"
     echo "*****************************************************************"
     exit -1
-  endif 
+  endif
 
   echo " - Prestaging REFCASE ($refdir) to $RUNDIR"
   if !(-d $RUNDIR) mkdir -p $RUNDIR || "cannot make $RUNDIR" && exit -1
-  foreach file ($DIN_LOC_ROOT/$refdir/*${RUN_REFCASE}*) 
+  foreach file ($DIN_LOC_ROOT/$refdir/*${RUN_REFCASE}*)
      if !(-f $RUNDIR/$file:t) then
         ln -s $file $RUNDIR || "cannot prestage $DIN_LOC_ROOT/$refdir data to $RUNDIR" && exit -1
      endif
@@ -163,7 +163,7 @@ echo "-------------------------------------------------------------------------"
 
 sleep 10
 cd $RUNDIR
-echo "`date` -- CSM EXECUTION BEGINS HERE" 
+echo "`date` -- CSM EXECUTION BEGINS HERE"
 
 setenv OMP_NUM_THREADS 1
 if ($MPILIB != "mpi-serial") then
@@ -175,7 +175,7 @@ else
 endif
 wait
 
-echo "`date` -- CSM EXECUTION HAS FINISHED" 
+echo "`date` -- CSM EXECUTION HAS FINISHED"
 
 # -------------------------------------------------------------------------
 # Check for successful run
@@ -184,7 +184,7 @@ echo "`date` -- CSM EXECUTION HAS FINISHED"
 set sdate = `date +"%Y-%m-%d %H:%M:%S"`
 
 cd $RUNDIR
-set CESMLogFile = `ls -1t cesm.log* | head -1` 
+set CESMLogFile = `ls -1t cesm.log* | head -1`
 if ($CESMLogFile == "") then
   echo "Model did not complete - no cesm.log file present - exiting"
   exit -1
@@ -206,15 +206,15 @@ cd $CASEROOT
 source ./Tools/ccsm_getenv
 
 # -------------------------------------------------------------------------
-# Save model output stdout and stderr 
+# Save model output stdout and stderr
 # -------------------------------------------------------------------------
 
 cd $RUNDIR
 gzip *.$LID
 if ($LOGDIR != "") then
   if (! -d $LOGDIR/bld) mkdir -p $LOGDIR/bld || echo " problem in creating $LOGDIR/bld"
-  cp -p *build.$LID.* $LOGDIR/bld  
-  cp -p *log.$LID.*   $LOGDIR      
+  cp -p *build.$LID.* $LOGDIR/bld
+  cp -p *log.$LID.*   $LOGDIR
 endif
 
 # -------------------------------------------------------------------------
@@ -244,10 +244,10 @@ cat > templar <<EOF
 EOF
     source templar
     if ($status != 0) then
-      echo "ccsm_postrun error: problem sourcing templar " 
+      echo "ccsm_postrun error: problem sourcing templar "
     endif
     rm templar
-  endif 
+  endif
 endif
 
 # -------------------------------------------------------------------------
@@ -276,16 +276,16 @@ cat > tempres <<EOF
 EOF
      source tempres
      if ($status != 0) then
-       echo "ccsm_postrun error: problem sourcing tempres " 
+       echo "ccsm_postrun error: problem sourcing tempres "
      endif
      rm tempres
-   endif 
+   endif
 endif
 
 if ($CHECK_TIMING == 'TRUE') then
   cd $CASEROOT
   if !(-d timing) mkdir timing
-  $CASETOOLS/getTiming.csh -lid $LID 
+  $CASETOOLS/getTiming.csh -lid $LID
   gzip timing/ccsm_timing_stats.$LID
 endif
 

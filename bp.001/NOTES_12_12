@@ -1,9 +1,9 @@
-***
-CURRENTLY SET FOR CESM 1.98       on  12 12-core nodes
+# CURRENTLY SET FOR CESM 1.98       on  12 12-core nodes
 
+# set USERID (CCSMUSER) and job name (CASE_DST)
 tcsh
-setenv CCSMUSER             jkmoore
-setenv CASE_DST             gdev.654
+setenv CCSMUSER             pasquieb
+setenv CASE_DST             bp.001
 
 setenv SCRIPT_DIR_BASE_DST /DFS-L/SCRATCH/moore/${CCSMUSER}/cesm_runs
 
@@ -42,7 +42,7 @@ cd ${SCRIPT_DIR_BASE_DST}/${CASE_DST}
 # STOP, copy over edited ecosys_mod file to /SourceMods/src.pop2
 
 ./xmlchange -file env_run.xml -id STOP_OPTION -val nmonth
-./xmlchange -file env_run.xml -id STOP_N      -val 744
+./xmlchange -file env_run.xml -id STOP_N      -val 1200
 ./xmlchange -file env_run.xml -id RESUBMIT    -val 0
 ./xmlchange -file env_run.xml -id DOUT_L_MS   -val FALSE
 ./xmlchange -file env_run.xml -id CONTINUE_RUN -val FALSE
