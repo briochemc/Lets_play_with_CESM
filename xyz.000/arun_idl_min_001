@@ -1,0 +1,381 @@
+
+; ***********************************************************
+; jkm.001  plot for physics runs
+; ***********************************************************
+retall
+close,/all
+;
+Runname=''
+Runname='jkm.001'
+
+.run extraction.V3
+.run pop4_coords
+.run aplotiron.progs
+.run aplotRegFe3.progs
+.run idl_plot_12regionsSO.progs
+.run idl_plot_12regions_fluxesSO
+.run idl_tempsalt_progs
+.run idl_plot_vertprof_woa.progs
+
+
+infile1='jkm.001.pop.h.0200.nc'
+outfile='CO2airsea_pop4.001.ps'
+.run idl_plot_airseaCO2_pop4x3.run
+
+
+Outfile='Ndepo_R.001.ps'
+infile1='jkm.001.pop.h.0200.nc'
+;.run idl_plot_Ndepo_pop4.run
+
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'NPsink_NPplank_NPnuts.001.ps'
+.run idl_plot_NPsink_NPplank_NPnuts.run
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'FeC_ratios.001.ps'
+.run idl_plot_FeC_ratios.run
+
+
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='denitrifDepth_gx3v7.001.ps'
+.run idl_plot_DenitrifDepth_pop4x3.run
+
+plot_12regions_po4SO,'jkm.001.pop.h.0200.nc','reg12_po4SO.001.ps',26
+plot_12regions_no3SO,'jkm.001.pop.h.0200.nc','reg12_no3SO.001.ps',26
+plot_12regions_nstarSO,'jkm.001.pop.h.0200.nc','reg12_nstarSO.001.ps',26 
+plot_12regions_Vpo4SO,'jkm.001.pop.h.0200.nc','reg12_Vpo4SO.001.ps',26,325.0
+plot_12regions_Vno3SO,'jkm.001.pop.h.0200.nc','reg12_Vno3SO.001.ps',26,325.0
+plot_12regions_VnstarSO,'jkm.001.pop.h.0200.nc','reg12_VnstarSO.001.ps',26,325.0
+
+
+; Global 0-315m z=0-31
+plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_Glob_0-315m.001.ps',0,31,0,99,0,115
+plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_Glob_0-315m.001.ps',0,31,0,99,0,115
+plot_depthrangeReg_no3Vobs,'jkm.001.pop.h.0200.nc','no3Vobs_Glob_0-315m.001.ps',0,31,0,99,0,115
+
+
+.run extraction.V3
+.run pop4_coords
+.run aplotiron.progs
+.run aplotRegFe3.progs
+
+extract_12reg_Annfluxes_wSedDen_cesm1_2,'jkm.001.pop.h.0200.nc','reg12_fluxes_jkm.001'
+
+
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='river_fluxes.001.ps'
+;.run idl_plot_river_fluxes_pop4x3.run
+
+SinkDepth='5250'
+level=60
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_5250m.001.ps'
+;.run idl_plot_sediment_fluxes_pop4x3.run
+
+SinkDepth='204'
+level=20
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_204m.001.ps'
+;.run idl_plot_sediment_fluxes_pop4x3.run
+
+SinkDepth='504'
+level=32
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_504m.001.ps'
+;.run idl_plot_sediment_fluxes_pop4x3.run
+
+minlevel=0
+maxlevel=10
+depthlabel='0-100m'
+minlevel2=10
+maxlevel2=25
+depthlabel2='100-295m'
+minlevel3=25
+maxlevel3=32
+depthlabel3='295-503m'
+minlevel4=32
+maxlevel4=40
+depthlabel4='503-1041m'
+infile='jkm.001.pop.h.0200.nc'
+;infile2='GA03_L1_gx3v7.txt'
+infile2='FeLigands_June2016_gx3v7.txt'
+outfile='ligGAO3_multidepth_shallow.001.ps'
+;.run idl_plot_FeLigand_modVobs_multi_depthrange.run
+
+minlevel=40
+maxlevel=43
+depthlabel='1041-1483m'
+minlevel2=43
+maxlevel2=46
+depthlabel2='1483-2074m'
+minlevel3=46
+maxlevel3=50
+depthlabel3='2074-3010m'
+minlevel4=50
+maxlevel4=58
+depthlabel4='3010-5250m'
+
+infile='jkm.001.pop.h.0200.nc'
+;infile2='GA03_L1_gx3v7.txt'
+infile2='FeLigands_June2016_gx3v7.txt'
+outfile='ligGAO3_multidepth_deep.001.ps'
+;.run idl_plot_FeLigand_modVobs_multi_depthrange.run
+
+retall
+close,/all
+
+.run aDOM.progs
+;plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_100m.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+;plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_100_315m.001.ps','jkm.001.pop.h.0200.nc',100.0,315.0
+plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_315m.001.ps','jkm.001.pop.h.0200.nc',0.0,315.0
+
+lab1='WOA nitrate '
+lab2='BEC Nitrate '
+lab3='BEC Ammonium '
+infile1='jkm.001.pop.h.0200.nc'
+outfile='no3_nh4.001.ps'
+;.run idl_plot_no3_nh4_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='bioC_ann.001.ps'
+;.run idl_plot_bioC_pop4x3.run
+
+PCref = 5.0
+PCrefdiaz=2.25
+Q10 = 1.7
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.001.ps'
+;.run idl_plot_phytogrowth_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.diat.001.ps'
+;.run idl_plot_phytogrowthDiat_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.sp.001.ps'
+;.run idl_plot_phytogrowthSp_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.diaz.001.ps'
+;.run idl_plot_phytogrowthDiaz_pop4x3.run
+retall
+close,/all
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='denitrifDepth_gx3v7.001.ps'
+;.run idl_plot_DenitrifDepth_pop4x3.run
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'NP_no3_po4_nstar_obs.ps'
+;.run idl_plot_NP_no3_po4_nstar_obs.run
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'NP_no3_po4_nstar.001.ps'
+;.run idl_plot_NP_no3_po4_nstar.run
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'NP_avg_no3_po4_nstar_obs.001.ps'
+;.run idl_plot_NP_avg_no3_po4_nstar_obs.run
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'NP_avg_no3_po4_nstar.001.ps'
+;.run idl_plot_NP_avg_no3_po4_nstar.run
+
+
+.run extraction.V3
+.run pop4_coords
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'NP_avg_po4_nstar_obs.001.ps'
+;.run idl_plot_NP_avg_po4_nstar_obs.run
+
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'NP_avg_po4_nstar.001.ps'
+;.run idl_plot_NP_avg_po4_nstar.run
+
+extract_12reg_Annfluxes_wSedDen_cesm1_2,'jkm.001.pop.h.0200.nc','reg12_fluxes.001'
+; plot dissloved iron compared with obs
+minlevel=0
+maxlevel=9
+depthlabel='0-100m'
+minlevel2=10
+maxlevel2=38
+depthlabel2='100-1041m'
+minlevel3=39
+maxlevel3=47
+depthlabel3='1041-2298m'
+minlevel4=48
+maxlevel4=58
+depthlabel4='2298-5200m'
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+outfile='adissFe_multi_0-5200m.001.ps'
+.run idl_plot_Fe_modVobs_multi_depthrange.run
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+; depth range of 0-100m
+minlevel=0
+maxlevel=10
+outfile='adissFe_v2ObsMasterFe_0_100m.001.ps'
+depthlabel='0-100m '
+.run idl_plot_Fe_Vobsx3.run
+
+ .run aplotiron.progs
+plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_0-315m.001.ps','jkm.001.pop.h.0200.nc',0.0,315.0
+;plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_0_100m.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+;plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_100-504m.001.ps','jkm.001.pop.h.0200.nc',100.0,504.0
+;plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+;plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_504-5200m.001.ps','jkm.001.pop.h.0200.nc',504.0,5200.0
+;plot_depthrange_iron_Eeqpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.eeqpac.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+;plot_depthrange_iron_NWpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.nwpac.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+;plot_depthrange_iron_Weqpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.weqpac.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+;plot_depthrange_iron_Weqpac,'master_Fe_gx3v7.txt','aFeMasterFe_100_504m.weqpac.001.ps','jkm.001.pop.h.0200.nc',100.0,504.0
+;plot_depthrange_iron_Weqpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_100m.weqpac.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'CNP_no3_po4_chl.001.ps'
+;.run idl_plot_CNP_no3_po4_chl.run
+
+woafile='WOA13_ann_corrO2_gx3v7.nc'
+cn='A) CESM NSTAR ' + Depth
+cn2='B) WOA13 NSTAR ' + Depth
+cn3='C) Panel B - Panel A
+
+minlevel=0
+maxlevel=9
+Depth=' 0-100m'
+woafile='WOA13_ann_corrO2_gx3v7.nc'
+cn='A) CESM NSTAR ' + Depth
+cn2='B) WOA13 NSTAR ' + Depth
+cn3='C) Panel B - Panel A
+infile='jkm.001.pop.h.0200.nc'
+outfile='NSTARvsObs_0-100m.001.ps'
+.run idl_plot_NSTARvsObs_depthrange.run
+
+
+woafile='WOA13_ann_corrO2_gx3v7.nc'
+Depth=' (0-315m)'
+cn='A) CESM NSTAR' + Depth
+cn2='B) WOA13 NSTAR' + Depth
+cn3='C) Panel B - Panel A
+minlevel=0
+maxlevel=28
+infile='jkm.001.pop.h.0200.nc'
+outfile='NSTARvsObs_0-315m.001.ps'
+.run idl_plot_NSTARvsObs_depthrange.run
+
+
+
+
+
+minlevel=15
+maxlevel=35
+Depth=' 150-671m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_150-671m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+infile='master_Fe_gx3v7.txt'
+infile2='jkm.001.pop.h.0200.nc'
+outfile='aFe_30deg_0_315m_N25_R.001.ps'
+step=30
+boxes=72
+mindepth=0.0
+maxdepth=315.0
+minN=25
+label1='Dissolved Iron 30x30 Degree Bins'
+;plot_depthrange_iron_spatial_avg_logstats,infile,infile2,outfile,mindepth,maxdepth,minN,step,boxes
+
+;.run idl_chl_seawifs_progs
+plot_log_surf_chl_data,'jkm.001.pop.h.0200.nc','lgchlVseaw.001.ps'
+
+;.run idl_chl_seawifs_progs
+plot_log_surf_chl_nocoast,'jkm.001.pop.h.0200.nc','coastalmask3gp_gx3v7','lgchlVseawnocoast.001.ps'
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='chl_seaw_rungx3v5.001.ps'
+.run idl_seaw_pop4x3.run
+
+.run idl_plot_vertprof_woa.progs
+
+plot_vertprof_dicalktempsalt,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_1000m.001.ps',39,1000.0
+
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_250m.001.ps',23,250.0
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_504m.001.ps',32,500.0
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_1000m.001.ps',39,1000.0
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='Puptake_gx3v7.001.ps'
+.run idl_plot_Puptake_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='OMZ.001.ps'
+.run idl_plot_OMZs_pop4x3.run
+
+;.run idl_tempsalt_progs
+.run idl_no3po4siFe_woa_surf.progs
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_145m_VsWOA2013.001.ps',14
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_Surf_VsWOA2013.001.ps',0
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_45m_VsWOA2013.001.ps',4
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='percentprod_gx3v7.001.ps'
+.run idl_plot_percentprod_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+woafile='WOA13_ann_avg_gx3v7.nc'
+outfile='no3po4_gx3v7.001.ps'
+.run idl_plot_no3po4_woa_pop4x3.run
+
+.run idl_limnutrients_pop4
+limnutsAnn_3phyto_nolight_deg,'jkm.001.pop.h.0200.nc','limnuts_jkm.001.ps',Runname
+
+print,'Run.001 '
+print,' '
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='nfixdenitrifSed_gx3v7.001.ps'
+;outfile2='rungx3v5.343_nfixdenitrif_sums'
+.run idl_plot_NfixDenitrifWsed_pop4x3.run
+
+SinkDepth='100'
+level=10
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_export_100m.001.ps'
+.run idl_plot_sinkingFlux_pop4x3.run
+
+SinkDepth='504'
+level=33
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_export_504m.001.ps'
+.run idl_plot_sinkingFlux_pop4x3.run
+
+SinkDepth='1041'
+level=40
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_export_1041m.001.ps'
+.run idl_plot_sinkingFlux_pop4x3.run
+
+infile1='jkm.001.pop.h.0200.nc'
+outfile='z_exportratio.001.ps'
+outfile2='zexportratio.001'
+outfile3='NPP.030'
+.run idl_plot_z_exportratio.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='sio2_gx3v7.001.ps'
+.run idl_plot_sio2_woa_pop4x3.run
+
+SinkDepth='100'
+level=10
+infile = 'jkm.001.pop.h.0200.nc'
+outfile='sink_CNP_flux.001.ps'
+;.run idl_plot_sink_CNP_Flux_pop4x3.run
+
+
+
+

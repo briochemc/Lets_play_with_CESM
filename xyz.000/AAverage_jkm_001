@@ -1,0 +1,84 @@
+ncra gdev.650.pop.h.0040.nc gdev.650.pop.h.0041.nc gdev.650.pop.h.0042.nc  gdev.650.pop.h.0043.nc gdev.650.pop.h.0200.nc
+
+ncra gdev.650.pop.h.0177.nc gdev.650.pop.h.0178.nc gdev.650.pop.h.0179.nc gdev.650.pop.h.0180.nc gdev.650.pop.h.0181.nc gdev.650.pop.h.0182.nc gdev.650.pop.h.0183.nc gdev.650.pop.h.0184.nc gdev.650.pop.h.0185.nc gdev.650.pop.h.0186.nc gdev.650.pop.h.0200.nc
+
+; annual average 650-620 (1990-2009)
+ncra gdev.650.pop.h.0650.nc gdev.650.pop.h.0602.nc gdev.650.pop.h.0603.nc gdev.650.pop.h.0604.nc gdev.650.pop.h.0605.nc gdev.650.pop.h.0606.nc gdev.650.pop.h.0607.nc gdev.650.pop.h.0608.nc gdev.650.pop.h.0609.nc gdev.650.pop.h.0610.nc gdev.650.pop.h.0611.nc gdev.650.pop.h.0612.nc gdev.650.pop.h.0613.nc gdev.650.pop.h.0614.nc gdev.650.pop.h.0615.nc gdev.650.pop.h.0616.nc gdev.650.pop.h.0617.nc gdev.650.pop.h.0618.nc gdev.650.pop.h.0619.nc gdev.650.pop.h.0620.nc gdev.650.pop.h.0650_620.nc
+
+
+ 
+; annual average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291.nc gdev.650.pop.h.0292.nc gdev.650.pop.h.0293.nc gdev.650.pop.h.0294.nc gdev.650.pop.h.0295.nc gdev.650.pop.h.0296.nc gdev.650.pop.h.0297.nc gdev.650.pop.h.0298.nc gdev.650.pop.h.0299.nc gdev.650.pop.h.0300.nc gdev.650.pop.h.0301.nc gdev.650.pop.h.0302.nc gdev.650.pop.h.0303.nc gdev.650.pop.h.0304.nc gdev.650.pop.h.0305.nc gdev.650.pop.h.0306.nc gdev.650.pop.h.0307.nc gdev.650.pop.h.0308.nc gdev.650.pop.h.0309.nc gdev.650.pop.h.0310.nc gdev.650.pop.h.0291_0310.nc
+
+cp gdev.650.pop.h.0291_0310.nc /lustre/DATA/moore/jkmoore/plotannx3 &
+cp gdev.650.pop.h.0291_0310.nc /lustre/DATA/moore/jkmoore/plotannx3/gdev.650.pop.h.0200.nc &
+gzip gdev.650.pop.h.03*nc &
+gzip gdev.650.pop.h.029*nc &
+cd /lustre/DATA/moore/jkmoore/plotannx3
+
+; annual average 043-062 (1990-2009)
+ncra gdev.650.pop.h.0043.nc gdev.650.pop.h.0044.nc gdev.650.pop.h.0045.nc gdev.650.pop.h.0046.nc gdev.650.pop.h.0047.nc gdev.650.pop.h.0048.nc gdev.650.pop.h.0049.nc gdev.650.pop.h.0050.nc gdev.650.pop.h.0051.nc gdev.650.pop.h.0052.nc gdev.650.pop.h.0053.nc gdev.650.pop.h.0054.nc gdev.650.pop.h.0055.nc gdev.650.pop.h.0056.nc gdev.650.pop.h.0057.nc gdev.650.pop.h.0058.nc gdev.650.pop.h.0059.nc gdev.650.pop.h.0060.nc gdev.650.pop.h.0061.nc gdev.650.pop.h.0062.nc gdev.650.pop.h.0043_0062.nc
+
+; annual average 103-124 (1990-2009)
+ncra gdev.650.pop.h.0103.nc gdev.650.pop.h.0104.nc gdev.650.pop.h.0105.nc gdev.650.pop.h.0106.nc gdev.650.pop.h.0107.nc gdev.650.pop.h.0108.nc gdev.650.pop.h.0109.nc gdev.650.pop.h.0110.nc gdev.650.pop.h.0111.nc gdev.650.pop.h.0112.nc gdev.650.pop.h.0113.nc gdev.650.pop.h.0114.nc gdev.650.pop.h.0115.nc gdev.650.pop.h.0116.nc gdev.650.pop.h.0117.nc gdev.650.pop.h.0118.nc gdev.650.pop.h.0119.nc gdev.650.pop.h.0120.nc gdev.650.pop.h.0121.nc gdev.650.pop.h.0122.nc gdev.650.pop.h.0103_0124.nc
+
+SEASONAL
+ncra gdev.650.pop.h.0291_0310-12.nc gdev.650.pop.h.0291_0310-01.nc gdev.650.pop.h.0291_0310-02.nc gdev.650.pop.h.0291_0310-DecJanFeb.nc
+
+ncra gdev.650.pop.h.0291_0310-03.nc gdev.650.pop.h.0291_0310-04.nc gdev.650.pop.h.0291_0310-05.nc gdev.650.pop.h.0291_0310-MarAprMay.nc
+
+ncra gdev.650.pop.h.0291_0310-06.nc gdev.650.pop.h.0291_0310-07.nc gdev.650.pop.h.0291_0310-08.nc gdev.650.pop.h.0291_0310-JunJulAug.nc
+
+ncra gdev.650.pop.h.0291_0310-09.nc gdev.650.pop.h.0291_0310-10.nc gdev.650.pop.h.0291_0310-11.nc gdev.650.pop.h.0291_0310-SepOctNov.nc
+
+ 
+
+; January average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-01.nc gdev.650.pop.h.0292-01.nc gdev.650.pop.h.0293-01.nc gdev.650.pop.h.0294-01.nc gdev.650.pop.h.0295-01.nc gdev.650.pop.h.0296-01.nc gdev.650.pop.h.0297-01.nc gdev.650.pop.h.0298-01.nc gdev.650.pop.h.0299-01.nc gdev.650.pop.h.0300-01.nc gdev.650.pop.h.0301-01.nc gdev.650.pop.h.0302-01.nc gdev.650.pop.h.0303-01.nc gdev.650.pop.h.0304-01.nc gdev.650.pop.h.0305-01.nc gdev.650.pop.h.0306-01.nc gdev.650.pop.h.0307-01.nc gdev.650.pop.h.0308-01.nc gdev.650.pop.h.0309-01.nc gdev.650.pop.h.0310-01.nc gdev.650.pop.h.0291_0310-01.nc
+
+; February average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-02.nc gdev.650.pop.h.0292-02.nc gdev.650.pop.h.0293-02.nc gdev.650.pop.h.0294-02.nc gdev.650.pop.h.0295-02.nc gdev.650.pop.h.0296-02.nc gdev.650.pop.h.0297-02.nc gdev.650.pop.h.0298-02.nc gdev.650.pop.h.0299-02.nc gdev.650.pop.h.0300-02.nc gdev.650.pop.h.0301-02.nc gdev.650.pop.h.0302-02.nc gdev.650.pop.h.0303-02.nc gdev.650.pop.h.0304-02.nc gdev.650.pop.h.0305-02.nc gdev.650.pop.h.0306-02.nc gdev.650.pop.h.0307-02.nc gdev.650.pop.h.0308-02.nc gdev.650.pop.h.0309-02.nc gdev.650.pop.h.0310-02.nc gdev.650.pop.h.0291_0310-02.nc
+
+; March average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-03.nc gdev.650.pop.h.0292-03.nc gdev.650.pop.h.0293-03.nc gdev.650.pop.h.0294-03.nc gdev.650.pop.h.0295-03.nc gdev.650.pop.h.0296-03.nc gdev.650.pop.h.0297-03.nc gdev.650.pop.h.0298-03.nc gdev.650.pop.h.0299-03.nc gdev.650.pop.h.0300-03.nc gdev.650.pop.h.0301-03.nc gdev.650.pop.h.0302-03.nc gdev.650.pop.h.0303-03.nc gdev.650.pop.h.0304-03.nc gdev.650.pop.h.0305-03.nc gdev.650.pop.h.0306-03.nc gdev.650.pop.h.0307-03.nc gdev.650.pop.h.0308-03.nc gdev.650.pop.h.0309-03.nc gdev.650.pop.h.0310-03.nc gdev.650.pop.h.0291_0310-03.nc
+
+; April average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-04.nc gdev.650.pop.h.0292-04.nc gdev.650.pop.h.0293-04.nc gdev.650.pop.h.0294-04.nc gdev.650.pop.h.0295-04.nc gdev.650.pop.h.0296-04.nc gdev.650.pop.h.0297-04.nc gdev.650.pop.h.0298-04.nc gdev.650.pop.h.0299-04.nc gdev.650.pop.h.0300-04.nc gdev.650.pop.h.0301-04.nc gdev.650.pop.h.0302-04.nc gdev.650.pop.h.0303-04.nc gdev.650.pop.h.0304-04.nc gdev.650.pop.h.0305-04.nc gdev.650.pop.h.0306-04.nc gdev.650.pop.h.0307-04.nc gdev.650.pop.h.0308-04.nc gdev.650.pop.h.0309-04.nc gdev.650.pop.h.0310-04.nc gdev.650.pop.h.0291_0310-04.nc
+
+; May average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-05.nc gdev.650.pop.h.0292-05.nc gdev.650.pop.h.0293-05.nc gdev.650.pop.h.0294-05.nc gdev.650.pop.h.0295-05.nc gdev.650.pop.h.0296-05.nc gdev.650.pop.h.0297-05.nc gdev.650.pop.h.0298-05.nc gdev.650.pop.h.0299-05.nc gdev.650.pop.h.0300-05.nc gdev.650.pop.h.0301-05.nc gdev.650.pop.h.0302-05.nc gdev.650.pop.h.0303-05.nc gdev.650.pop.h.0304-05.nc gdev.650.pop.h.0305-05.nc gdev.650.pop.h.0306-05.nc gdev.650.pop.h.0307-05.nc gdev.650.pop.h.0308-05.nc gdev.650.pop.h.0309-05.nc gdev.650.pop.h.0310-05.nc gdev.650.pop.h.0291_0310-05.nc
+
+; June average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-06.nc gdev.650.pop.h.0292-06.nc gdev.650.pop.h.0293-06.nc gdev.650.pop.h.0294-06.nc gdev.650.pop.h.0295-06.nc gdev.650.pop.h.0296-06.nc gdev.650.pop.h.0297-06.nc gdev.650.pop.h.0298-06.nc gdev.650.pop.h.0299-06.nc gdev.650.pop.h.0300-06.nc gdev.650.pop.h.0301-06.nc gdev.650.pop.h.0302-06.nc gdev.650.pop.h.0303-06.nc gdev.650.pop.h.0304-06.nc gdev.650.pop.h.0305-06.nc gdev.650.pop.h.0306-06.nc gdev.650.pop.h.0307-06.nc gdev.650.pop.h.0308-06.nc gdev.650.pop.h.0309-06.nc gdev.650.pop.h.0310-06.nc gdev.650.pop.h.0291_0310-06.nc
+
+; July average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-07.nc gdev.650.pop.h.0292-07.nc gdev.650.pop.h.0293-07.nc gdev.650.pop.h.0294-07.nc gdev.650.pop.h.0295-07.nc gdev.650.pop.h.0296-07.nc gdev.650.pop.h.0297-07.nc gdev.650.pop.h.0298-07.nc gdev.650.pop.h.0299-07.nc gdev.650.pop.h.0300-07.nc gdev.650.pop.h.0301-07.nc gdev.650.pop.h.0302-07.nc gdev.650.pop.h.0303-07.nc gdev.650.pop.h.0304-07.nc gdev.650.pop.h.0305-07.nc gdev.650.pop.h.0306-07.nc gdev.650.pop.h.0307-07.nc gdev.650.pop.h.0308-07.nc gdev.650.pop.h.0309-07.nc gdev.650.pop.h.0310-07.nc gdev.650.pop.h.0291_0310-07.nc
+
+; August average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-08.nc gdev.650.pop.h.0292-08.nc gdev.650.pop.h.0293-08.nc gdev.650.pop.h.0294-08.nc gdev.650.pop.h.0295-08.nc gdev.650.pop.h.0296-08.nc gdev.650.pop.h.0297-08.nc gdev.650.pop.h.0298-08.nc gdev.650.pop.h.0299-08.nc gdev.650.pop.h.0300-08.nc gdev.650.pop.h.0301-08.nc gdev.650.pop.h.0302-08.nc gdev.650.pop.h.0303-08.nc gdev.650.pop.h.0304-08.nc gdev.650.pop.h.0305-08.nc gdev.650.pop.h.0306-08.nc gdev.650.pop.h.0307-08.nc gdev.650.pop.h.0308-08.nc gdev.650.pop.h.0309-08.nc gdev.650.pop.h.0310-08.nc gdev.650.pop.h.0291_0310-08.nc
+
+; September average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-09.nc gdev.650.pop.h.0292-09.nc gdev.650.pop.h.0293-09.nc gdev.650.pop.h.0294-09.nc gdev.650.pop.h.0295-09.nc gdev.650.pop.h.0296-09.nc gdev.650.pop.h.0297-09.nc gdev.650.pop.h.0298-09.nc gdev.650.pop.h.0299-09.nc gdev.650.pop.h.0300-09.nc gdev.650.pop.h.0301-09.nc gdev.650.pop.h.0302-09.nc gdev.650.pop.h.0303-09.nc gdev.650.pop.h.0304-09.nc gdev.650.pop.h.0305-09.nc gdev.650.pop.h.0306-09.nc gdev.650.pop.h.0307-09.nc gdev.650.pop.h.0308-09.nc gdev.650.pop.h.0309-09.nc gdev.650.pop.h.0310-09.nc gdev.650.pop.h.0291_0310-09.nc
+
+; October average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-10.nc gdev.650.pop.h.0292-10.nc gdev.650.pop.h.0293-10.nc gdev.650.pop.h.0294-10.nc gdev.650.pop.h.0295-10.nc gdev.650.pop.h.0296-10.nc gdev.650.pop.h.0297-10.nc gdev.650.pop.h.0298-10.nc gdev.650.pop.h.0299-10.nc gdev.650.pop.h.0300-10.nc gdev.650.pop.h.0301-10.nc gdev.650.pop.h.0302-10.nc gdev.650.pop.h.0303-10.nc gdev.650.pop.h.0304-10.nc gdev.650.pop.h.0305-10.nc gdev.650.pop.h.0306-10.nc gdev.650.pop.h.0307-10.nc gdev.650.pop.h.0308-10.nc gdev.650.pop.h.0309-10.nc gdev.650.pop.h.0310-10.nc gdev.650.pop.h.0291_0310-10.nc
+
+; November average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-11.nc gdev.650.pop.h.0292-11.nc gdev.650.pop.h.0293-11.nc gdev.650.pop.h.0294-11.nc gdev.650.pop.h.0295-11.nc gdev.650.pop.h.0296-11.nc gdev.650.pop.h.0297-11.nc gdev.650.pop.h.0298-11.nc gdev.650.pop.h.0299-11.nc gdev.650.pop.h.0300-11.nc gdev.650.pop.h.0301-11.nc gdev.650.pop.h.0302-11.nc gdev.650.pop.h.0303-11.nc gdev.650.pop.h.0304-11.nc gdev.650.pop.h.0305-11.nc gdev.650.pop.h.0306-11.nc gdev.650.pop.h.0307-11.nc gdev.650.pop.h.0308-11.nc gdev.650.pop.h.0309-11.nc gdev.650.pop.h.0310-11.nc gdev.650.pop.h.0291_0310-11.nc
+
+; December average 291-310 (1990-2009)
+ncra gdev.650.pop.h.0291-12.nc gdev.650.pop.h.0292-12.nc gdev.650.pop.h.0293-12.nc gdev.650.pop.h.0294-12.nc gdev.650.pop.h.0295-12.nc gdev.650.pop.h.0296-12.nc gdev.650.pop.h.0297-12.nc gdev.650.pop.h.0298-12.nc gdev.650.pop.h.0299-12.nc gdev.650.pop.h.0300-12.nc gdev.650.pop.h.0301-12.nc gdev.650.pop.h.0302-12.nc gdev.650.pop.h.0303-12.nc gdev.650.pop.h.0304-12.nc gdev.650.pop.h.0305-12.nc gdev.650.pop.h.0306-12.nc gdev.650.pop.h.0307-12.nc gdev.650.pop.h.0308-12.nc gdev.650.pop.h.0309-12.nc gdev.650.pop.h.0310-12.nc gdev.650.pop.h.0291_0310-12.nc
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1577 @@
+;
+retall
+close,/all
+;
+Runname=''
+Runname='jkm.001'
+
+.run extraction.V3
+.run pop4_coords
+
+ 
+infile1='jkm.001.pop.h.0200.nc'
+outfile='exportratio.001.ps'
+.run idl_plot_exportratio_pop4.run
+
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='MAREDAT_diatoms_gx3v7'
+; depth range of 0-100m
+minlevel=0
+maxlevel=10
+outfile='Maredat_diatC_0_100m.001.ps'
+label='Diatom Carbon '
+.run idl_plot_Maredat_diatC_gx3v7.run
+
+
+infile = 'jkm.001.pop.h.0200.nc'
+outfile='percent_large.001.ps'
+.run idl_plot_perc_large_pop4.run
+
+
+SinkDepth='100'
+level=10
+infile = 'jkm.001.pop.h.0200.nc'
+outfile='sink_CNP_flux.001.ps'
+.run idl_plot_sink_CNP_Flux_pop4x3.run
+
+
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'zexp_no3_po4_chl_obs.001.ps'
+.run idl_plot_zexp_no3_po4_chl_obs.run
+
+
+infile1 = 'jkm.001.pop.h.0200.nc'
+outfile = 'zexp_no3_po4_chl.001.ps'
+.run idl_plot_zexp_no3_po4_chl.run
+
+
+infile = 'jkm.001.pop.h.0200.nc'
+outfile='percent_large.001.ps'
+.run idl_plot_perc_large_pop4.run
+
+
+infile='master_Fe_gx3v7.txt'
+infile2='jkm.001.pop.h.0200.nc'
+outfile='aFe_30deg_0_315m_R.001.ps'
+step=30
+boxes=72
+mindepth=0.0
+maxdepth=315.0
+label1='Dissolved Iron 30x30 Degree Bins'
+plot_depthrange_iron_spatial_avg_logstats,infile,infile2,outfile,mindepth,maxdepth,step,boxes,label1
+
+
+
+
+.run aplotiron.progs
+.run aplotRegFe.progs
+
+
+plot_vertprof_HighDust_obsANDavg, 'jkm.001.pop.h.0200.nc', 'master_Fe_gx3v7_DUST.txt', 'aFeProf_HighDust_R.0424.ps'
+
+plot_vertprof_HighDust_obsANDavg_deep, 'jkm.001.pop.h.0200.nc', 'master_Fe_gx3v7_DUST.txt', 'aFeProfDeep_HighDust_R.0424.ps'
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='solFe_scenario4_current_gx3v7_6gmol_cesm1_94_2016.nc'
+infile3='fesedflux_gx3v7_etopo2v2_18gmol_cesm1_94_2016.nc'
+infile4='feventflux_gx3v7_10gmol_constant_2016.nc'
+outfile='aFe_ProdVLoss_1000m.001.ps'
+lowx=0
+highx=99
+lowy=0
+highy=115
+.run idl_plot_Fe_terms_1000m.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='aFe_ProdVLoss_0010m.001.ps'
+infile2='solFe_scenario4_current_gx3v7_6gmol_cesm1_94_2016.nc'
+infile3='fesedflux_gx3v7_etopo2v2_20gmol_cesm1_94_2016.nc'
+infile4='feventflux_gx3v7_10gmol_constant_2016.nc'
+lowx=0
+highx=99
+lowy=0
+highy=115
+.run idl_plot_Fe_terms_0010m.run
+
+
+cn='A) Fe From Dust = '
+fn='B) Fe From Sediment = '
+Outfile='Fe_ReduceSed_lossSed.001.ps'
+infile='jkm.001.pop.h.0200.nc'
+infile2='fesedfluxRed_gx3v7_cesm1_97_2017.nc'
+infile3='solFe_gx3v7_cesm1_97_2017.nc'
+dlevel=59
+.run idl_plot_Fe_DustSeds.run
+
+
+cn='A) Fe From Dust = '
+fn='B) Fe From Sediment = '
+Outfile='Fe_OxicSeds_lossSed.001.ps'
+infile='jkm.001.pop.h.0200.nc'
+infile2='fesedflux_gx3v7_cesm1_97_2017.nc'
+infile3='solFe_gx3v7_cesm1_97_2017.nc'
+dlevel=59
+.run idl_plot_Fe_DustSeds.run
+
+
+cn='A) Fe From Dust = '
+fn='B) Fe From Sediment = '
+Outfile='Fe_Vents_lossSed.001.ps'
+infile='jkm.001.pop.h.0200.nc'
+infile2='feventflux_gx3v7_5gmol_cesm1_97_2017.nc'
+infile3='solFe_gx3v7_cesm1_97_2017.nc'
+dlevel=59
+.run idl_plot_Fe_DustSeds.run
+
+
+cn='A) Surface dFe = '
+fn='B) Dust Remin dFe = '
+Outfile='Fe_atmsFeinputs.001.ps'
+infile='jkm.001.pop.h.0200.nc'
+infile3='solFe_gx3v7_cesm1_97_2017.nc'
+dlevel=59
+.run idl_plot_Fe_SolDustRemin.run
+
+
+
+cn='A) Fe From Dust = '
+fn='B) Fe From Vents = '
+Outfile='Fe_inputs_lossVent.001.ps'
+infile='jkm.001.pop.h.0200.nc'
+infile2='feventflux_gx3v7_4gmol_cesm1_97_2017.nc'
+infile3='solFe_gx3v7_cesm1_97_2017.nc'
+dlevel=59
+.run idl_plot_Fe_DustSeds.run
+
+
+minlevel=0
+maxlevel=10
+depthlabel='0-100m'
+
+minlevel2=10
+maxlevel2=20
+depthlabel2='100-203m'
+
+minlevel3=20
+maxlevel3=26
+depthlabel3='203-295m'
+
+minlevel4=26
+maxlevel4=33
+depthlabel4='295-503m'
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='GEOTRACES_GA03_ligands_gx3v7.txt'
+outfile='lig_multidepth_shallow_424.ps'
+.run idl_plot_FeLigand_modVobs_multi_depthrange.run
+
+minlevel=33
+maxlevel=40
+depthlabel='503-1041m'
+
+minlevel2=40
+maxlevel2=43
+depthlabel2='1041-1483m'
+
+minlevel3=43
+maxlevel3=46
+depthlabel3='1483-2074m'
+
+minlevel4=46
+maxlevel4=58
+depthlabel4='2074-5250m'
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='GEOTRACES_GA03_ligands_gx3v7.txt'
+outfile='lig_multidepth_deep_424.ps'
+.run idl_plot_FeLigand_modVobs_multi_depthrange.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='aLig_prod_V_loss0010m_424.ps'
+.run idl_plot_ligand_terms_0010m.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='aLig_prod_V_loss1000m_424.ps'
+.run idl_plot_ligand_terms_1000m.run
+
+.run aplotlig.progs
+
+plot_depthrange_ligand_reg,'GEOTRACES_GA03_ligands_gx3v7.txt','ligand_0-100m.jkm_424.ps','jkm.001.pop.h.0200.nc', 0.0, 100.0
+plot_depthrange_ligand_reg,'GEOTRACES_GA03_ligands_gx3v7.txt','ligand_0-001m.jkm_424.ps','jkm.001.pop.h.0200.nc', 0.0, 001.0
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='eratioWdoc_gx3v7.001.ps'
+.run idl_plot_eratio_wDOC.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='eratioWSemidoc_gx3v7.001.ps'
+.run idl_plot_eratio_wSemiDOC.run
+
+
+infile1='jkm.001.pop.h.0200.nc'
+outfile='Tratios.001.ps'
+.run idl_plot_transfer_efficiency.run
+
+Outfile='DON_depo_R.001.ps'
+infile1='jkm.001.pop.h.0200.nc'
+;.run idl_plot_DON_depo_popx3.run 
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='river_fluxes.001.ps'
+.run idl_plot_river_fluxes_pop4x3.run
+
+Outfile='river_DIC_ALK_gx3v7.001.ps'
+;.run idl_plot_RivDIC_ALK_pop4.run
+
+Outfile='Ndepo_R.001.ps'
+infile1='jkm.001.pop.h.0200.nc'
+.run idl_plot_Ndepo_pop4.run
+
+; plot dissloved iron compared with obs
+minlevel=0
+maxlevel=9
+depthlabel='0-100m'
+minlevel2=10
+maxlevel2=31
+depthlabel2='100-504m'
+minlevel3=32
+maxlevel3=38
+depthlabel3='504-1041m'
+minlevel4=39
+maxlevel4=58
+depthlabel4='> 1041m'
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+outfile='adissFe_multi_0-0010m.001.ps'
+.run idl_plot_Fe_modVobs_multi_depthrange.run
+
+
+; plot dissloved iron compared with obs
+minlevel=0
+maxlevel=9
+depthlabel='0-100m'
+minlevel2=10
+maxlevel2=38
+depthlabel2='100-1041m'
+minlevel3=39
+maxlevel3=47
+depthlabel3='1041-2298m'
+minlevel4=48
+maxlevel4=58
+depthlabel4='2298-0010m'
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+outfile='adissFe_multi_0-0010m.001.ps'
+.run idl_plot_Fe_modVobs_multi_depthrange.run
+
+
+
+SinkDepth='5250'
+level=60
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_5250m.001.ps'
+.run idl_plot_sediment_fluxes_pop4x3.run
+
+SinkDepth='204'
+level=20
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_204m.001.ps'
+;.run idl_plot_sediment_fluxes_pop4x3.run
+
+SinkDepth='504'
+level=32
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_504m.001.ps'
+.run idl_plot_sediment_fluxes_pop4x3.run
+
+SinkDepth='1041'
+level=39
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_1041m.001.ps'
+;.run idl_plot_sediment_fluxes_pop4x3.run
+
+SinkDepth='2075'
+level=48
+infile='jkm.001.pop.h.0200.nc'
+outfile='sediment_fluxes_2075m.001.ps'
+;.run idl_plot_sediment_fluxes_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 0-100m
+minlevel=0
+maxlevel=9
+outfile='DOC_vsObs_0_100m.001.ps'
+depthlabel='0-100m '
+;.run idl_plot_DOC_Vobsx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 100-315m
+minlevel=10
+maxlevel=27
+outfile='DOC_vsObs_100_315m.001.ps'
+depthlabel='100-315m '
+;.run idl_plot_DOC_Vobsx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 0-100m
+minlevel=0
+maxlevel=9
+outfile='DONtotal_vsObs_0_100m.001.ps'
+depthlabel='0-100m '
+;.run idl_plot_DONtotal_Vobsx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 100-315m
+minlevel=10
+maxlevel=27
+outfile='DONtotal_vsObs_100_315m.001.ps'
+depthlabel='100-315m '
+;.run idl_plot_DONtotal_Vobsx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='MeridionalVelocity_001m.001.ps'
+level=32
+;.run idl_plot_MeridionalVelocity_gx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='ZonalVelocity_100m.001.ps'
+level=9
+;.run idl_plot_ZonalVelocity_gx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='VerticalVelocity_100m.001.ps'
+level=9
+.run idl_plot_VerticalVelocity_gx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='MeridionalVelocity_100m.001.ps'
+level=9
+;.run idl_plot_MeridionalVelocity_gx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='ZonalVelocity_100m.001.ps'
+level=9
+;.run idl_plot_ZonalVelocity_gx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='VerticalVelocity_001m.001.ps'
+level=32
+;.run idl_plot_VerticalVelocity_gx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='MeridionalVelocity_1000m.001.ps'
+level=39
+;.run idl_plot_MeridionalVelocity_gx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='ZonalVelocity_1000m.001.ps'
+level=39
+;.run idl_plot_ZonalVelocity_gx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='VerticalVelocity_1000m.001.ps'
+level=39
+;.run idl_plot_VerticalVelocity_gx3.run
+
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 0-100m
+minlevel=0
+maxlevel=9
+outfile='DONsl_vsObs_0_100m.001.ps'
+depthlabel='0-100m '
+;.run idl_plot_DONsl_Vobsx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 100-315m
+minlevel=10
+maxlevel=27
+outfile='DONsl_vsObs_100_315m.001.ps'
+depthlabel='100-315m '
+;.run idl_plot_DONsl_Vobsx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 0-100m
+minlevel=0
+maxlevel=9
+outfile='DOPtotal_vsObs_0_100m.001.ps'
+depthlabel='0-100m '
+;.run idl_plot_DOPtotal_Vobsx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 0-100m
+minlevel=10
+maxlevel=27
+outfile='DOPtotal_vsObs_100_315m.001.ps'
+depthlabel='100-315m '
+;.run idl_plot_DOPtotal_Vobsx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 0-100m
+minlevel=0
+maxlevel=9
+outfile='DOPsl_vsObs_0_100m.001.ps'
+depthlabel='0-100m '
+;.run idl_plot_DOPsl_Vobsx3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='DOMdatabaseDec2012_gx3v7'
+; depth range of 100-315m
+minlevel=10
+maxlevel=27
+outfile='DOPsl_vsObs_100_315m.001.ps'
+depthlabel='100-315m '
+;.run idl_plot_DOPsl_Vobsx3.run
+
+
+.run aDOM.progs
+plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_100m.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_001m.001.ps','jkm.001.pop.h.0200.nc',0.0,001.0
+plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_100_001m.001.ps','jkm.001.pop.h.0200.nc',100.0,001.0
+;plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_315m.001.ps','jkm.001.pop.h.0200.nc',0.0,315.0
+;plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_1000_5250m.001.ps','jkm.001.pop.h.0200.nc',1000.0,5300.0
+;plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_001_1000m.001.ps','jkm.001.pop.h.0200.nc',001.0,1000.0
+;plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_5250m.001.ps','jkm.001.pop.h.0200.nc',0.0,0010.0
+
+retall
+close,/all
+
+PDdiff=0.125
+infile1='jkm.001.pop.h.0200.nc
+infile2='PHC2_RHOann_gx3v7.nc'
+outfile='mldepth_PD_125_rungx3v5.001.ps
+;outfile2='mld_obsPD06_gx3v7'
+;outfile3='mld_modPD06_100_gx3v7'
+;.run idl_plot_annML_pd_pop4.run
+
+level=11
+infile1='jkm.001.pop.h.0200.nc'
+outfile='mixkv_105m.001.ps'
+.run idl_plot_kvmix_pop4x3.run
+
+level=16
+infile1='jkm.001.pop.h.0200.nc'
+outfile='mixisop_165m.001.ps'
+.run idl_plot_isopmix_pop4x3.run
+
+level=26
+infile1='jkm.001.pop.h.0200.nc'
+outfile='mixisop_305m.001.ps'
+.run idl_plot_isopmix_pop4x3.run
+
+level=32
+infile1='jkm.001.pop.h.0200.nc'
+outfile='mixisop_528m.001.ps'
+.run idl_plot_isopmix_pop4x3.run
+
+minlevel=5
+maxlevel=32
+infile1='jkm.001.pop.h.0200.nc'
+outfile='kvmix_50m_504m.001.ps'
+.run idl_plot_avgkvmix_pop4x3.run
+
+minlevel=0
+maxlevel=26
+infile1='jkm.001.pop.h.0200.nc'
+outfile='kvmix_0m_295m.001.ps'
+.run idl_plot_avgkvmix_pop4x3.run
+
+minlevel=26
+maxlevel=37
+infile1='jkm.001.pop.h.0200.nc'
+outfile='kvmix_295m_830m.001.ps'
+.run idl_plot_avgkvmix_pop4x3.run
+
+minlevel=38
+maxlevel=45
+infile1='jkm.001.pop.h.0200.nc'
+outfile='kvmix_830m_2075m.001.ps'
+.run idl_plot_avgkvmix_pop4x3.run
+
+minlevel=46
+maxlevel=50
+infile1='jkm.001.pop.h.0200.nc'
+outfile='kvmix_2075m_3256m.001.ps'
+.run idl_plot_avgkvmix_pop4x3.run
+ 
+minlevel=51
+maxlevel=58
+infile1='jkm.001.pop.h.0200.nc'
+outfile='kvmix_3256m_0010m.001.ps'
+.run idl_plot_avgkvmix_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='icecover.001.ps'
+.run idl_plot_percentIce_pop4x3.run
+
+level=0
+deep=0
+infile='jkm.001.pop.h.0200.nc'
+outfile='density_surface.001.ps'
+.run idl_plot_density_pop4x3.run
+
+level=31
+deep=1
+infile='jkm.001.pop.h.0200.nc'
+outfile='density_393-001m.001.ps'
+.run idl_plot_density_pop4x3.run
+
+level=28
+deep=1
+infile='jkm.001.pop.h.0200.nc'
+outfile='density_315-338m.001.ps'
+.run idl_plot_density_pop4x3.run
+
+
+isopyc = 2109.15 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.018.pop.h.0200.nc'
+deep=0
+outfile='iagep_iso_2109.15.001.ps'
+;.run idl_plot_IAGE_isopycnal_pop4x3.run
+
+minlevel=10
+maxlevel=25
+Depth=' 100-276m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 0
+outfile='iageOMZ_100-276m.001.ps'
+;.run idl_plot_IAGE_OMZ_pop4x3.run
+
+
+minlevel=15
+maxlevel=28
+Depth=' 150-364m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 0
+outfile='iage_150-364m.001.ps'
+;.run idl_plot_IAGE_depthrange_pop4x3.run
+
+minlevel=29
+maxlevel=35
+Depth=' 364-671m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 0
+outfile='iage_364-671.001.ps'
+;.run idl_plot_IAGE_depthrange_pop4x3.run
+
+minlevel=36
+maxlevel=40
+Depth=' 671-1041m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 0
+outfile='iage_671-1041.001.ps'
+;.run idl_plot_IAGE_depthrange_pop4x3.run
+
+minlevel=17
+maxlevel=28
+Depth=' 150-364m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 0
+outfile='iageOMZ_150-364m.001.ps'
+;.run idl_plot_IAGE_OMZ_pop4x3.run
+
+minlevel=29
+maxlevel=35
+Depth=' 364-671m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 0
+outfile='iageOMZ_364-671.001.ps'
+;.run idl_plot_IAGE_OMZ_pop4x3.run
+
+minlevel=36
+maxlevel=40
+Depth=' 671-1041m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 0
+outfile='iageOMZ_671-1041.001.ps'
+;.run idl_plot_IAGE_OMZ_pop4x3.run
+
+
+minlevel=41
+maxlevel=42
+Depth=' 1041-2008m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 1
+outfile='iage_1041-2008m.001.ps'
+;.run idl_plot_IAGE_depthrange_pop4x3.run
+
+
+minlevel=47
+maxlevel=58
+Depth=' 2075-0010m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 1
+outfile='iage_2075-0010m.001.ps'
+;.run idl_plot_IAGE_depthrange_pop4x3.run
+
+minlevel=51
+maxlevel=52
+Depth=' 3011-3504m'
+infile1='jkm.001.pop.h.0200.nc'
+infile2='jkm.019.pop.h.0200.nc'
+deep = 1
+outfile='iage_3011-3504m.001.ps'
+;.run idl_plot_IAGE_depthrange_pop4x3.run
+
+
+
+
+.run aOMZprogs
+;plot_cumulativeO2volume,'jkm.001.pop.h.0200.nc','o2volume_jkm300.ps',0,58
+;plot_cumulativeO2volume,'jkm.001.pop.h.0200.nc','o2volume_lt2009m_jkm300.ps',0,44
+;plot_cumulativeO2volume,'jkm.001.pop.h.0200.nc','o2volume_100_1000m_jkm300.ps',10,39
+
+.run idl_plot_vertprof_woa.progs
+
+; EqPac 3S-3N, 120-290E, 0-3000m
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_EqPacInt_3000m.001.ps',44,3000.0,44,91,44,53
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_EqPacInt_3000m.001.ps',44,3000.0,44,91,44,53
+
+; EqPac 3N-6N, 120-290E, 0-3000m
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_EqPacInt_3-6N_3000m.001.ps',44,3000.0,44,91,54,58
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_EqPacInt_3-6N_3000m.001.ps',44,3000.0,44,91,54,58
+
+; EqPac 3S-6S, 120-290E, 0-3000m
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_EqPacInt_3-6S_3000m.001.ps',44,3000.0,44,91,39,43
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_EqPacInt_3-6S_3000m.001.ps',44,3000.0,44,91,39,43
+
+; Indian 3S-3N, 40-110E, 0-3000m
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_EqIndInt_3000m.001.ps',44,3000.0,21,41,44,53
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_EqIndInt_3000m.001.ps',44,3000.0,21,41,44,53
+
+; Indian 3N-6N, 40-110E, 0-3000m
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_EqIndInt_3-6N_3000m.001.ps',44,3000.0,21,41,54,58
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_EqIndInt_3-6N_3000m.001.ps',44,3000.0,21,41,54,58
+
+; Indian 3S-6S, 40-110E, 0-3000m
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_EqIndInt_3-6S_3000m.001.ps',44,3000.0,21,41,39,43
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_EqIndInt_3-6S_3000m.001.ps',44,3000.0,21,41,39,43
+
+
+; Atlantic 3S-3N, 300E-20W, 0-3000m (x=0-16 and 94-99)
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_EqPacInt_3000m.001.ps',44,3000.0,44,91,44,53
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_EqPacInt_3000m.001.ps',44,3000.0,44,91,44,53
+
+
+
+plot_vertprof_dicalktempsalt_omz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_omz20_1000m.001.ps',39,1000.0,20.0
+plot_vertprof_dicalktempsalt_omz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_omz20_2000m.001.ps',45,2000.0,20.0
+plot_vertprof_dicalktempsalt_omz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_omz20_001m.001.ps',33,001.0,20.0
+plot_vertprof_dicalktempsalt_omz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_omz20_4200m.001.ps',55,4200.0,20.0
+plot_vertprof_dicalktempsalt_omz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_omz20_0010m.001.ps',59,0010.0,20.0
+
+plot_vertprof_dicalktempsalt_nonomz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_nonomz20_1000m.001.ps',39,1000.0,20.0
+plot_vertprof_dicalktempsalt_nonomz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_nonomz20_2000m.001.ps',45,2000.0,20.0
+plot_vertprof_dicalktempsalt_nonomz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_nonomz20_001m.001.ps',33,001.0,20.0
+plot_vertprof_dicalktempsalt_nonomz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_nonomz20_4200m.001.ps',55,4200.0,20.0
+plot_vertprof_dicalktempsalt_nonomz,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_nonomz20_0010m.001.ps',59,0010.0,20.0
+
+plot_vertprof_po4VSo2_woa_omz_lowlat,'jkm.001.pop.h.0200.nc','vert_po4VSo2_omz20low_1000m.001.ps',39,1000.0, 20.0
+plot_vertprof_po4VSo2_woa_nonomz_lowlat,'jkm.001.pop.h.0200.nc','vert_po4VSo2_nonomz20low_1000m.001.ps',39,1000.0, 20.0
+
+
+plot_vertprof_no3po4sio2_woa_omz_lowlat,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20low_001m.001.ps',32,001.0, 20.0
+plot_vertprof_no3po4sio2_woa_nonomz_lowlat,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20low_001m.001.ps',32,001.0, 20.0
+plot_vertprof_no3po4sio2_woa_omz_lowlat,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20low_1000m.001.ps',39,1000.0, 20.0
+plot_vertprof_no3po4sio2_woa_nonomz_lowlat,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20low_1000m.001.ps',39,1000.0, 20.0
+plot_vertprof_no3po4sio2_woa_omz_lowlat,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20low_2000m.001.ps',45,2000.0,20.0
+plot_vertprof_no3po4sio2_woa_nonomz_lowlat,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20low_2000m.001.ps',45,2000.0,20.0
+
+
+plot_vertprof_dicalktempsalt,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_1000m.001.ps',39,1000.0
+plot_vertprof_dicalktempsalt,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_2000m.001.ps',45,2000.0
+plot_vertprof_dicalktempsalt,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_001m.001.ps',33,001.0
+plot_vertprof_dicalktempsalt,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_4200m.001.ps',55,4200.0
+plot_vertprof_dicalktempsalt,'jkm.001.pop.h.0200.nc','vertdicalktempsalt_0010m.001.ps',59,0010.0
+
+
+
+; Weddell region (300-350E,80-60S)
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_Weddell_0010m.001.ps',59,0010.0,94,99,0,12
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_Weddell_1000m.001.ps',39,1000.0,94,99,0,12
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Weddell_0010m.001.ps',59,0010.0,94,99,0,12
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Weddell_1000m.001.ps',39,1000.0,94,99,0,12
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Weddell_0010m.001.ps',59,0010.0,94,99,0,12
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Weddell_1000m.001.ps',39,1000.0,94,99,0,12
+
+; Ross region (150-210E,80-60S)
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_Ross_0010m.001.ps',59,0010.0,55,60,0,12
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_Ross_1000m.001.ps',39,1000.0,55,60,0,12
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Ross_0010m.001.ps',59,0010.0,55,60,0,12
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Ross_1000m.001.ps',39,1000.0,55,60,0,12
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Ross_0010m.001.ps',59,0010.0,55,60,0,12
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Ross_1000m.001.ps',39,1000.0,55,60,0,12
+
+
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_SO45-60S_1000m.001.ps',39,1000.0,0,99,13,19
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_SO45-60S_0010m.001.ps',59,0010.0,0,99,13,19
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_SO60S_1000m.001.ps',39,1000.0,0,99,0,12
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_SO60S_0010m.001.ps',59,0010.0,0,99,0,12
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NPac_1000m.001.ps',39,1000.0,53,69,76,84
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NPac_0010m.001.ps',59,0010.0,53,69,76,84
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpac_1000m.001.ps',39,1000.0,53,59,76,84
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpac_0010m.001.ps',59,0010.0,53,59,76,84
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NpacStatP_1000m.001.ps',39,1000.0,71,72,78,80
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NpacStatP_0010m.001.ps',59,0010.0,71,72,78,80
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacLowO2_1000m.001.ps',39,1000.0,54,57,76,81
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacLowO2_0010m.001.ps',59,0010.0,54,57,76,81
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacHiO2_1000m.001.ps',39,1000.0,51,53,75,77
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacHiO2_0010m.001.ps',59,0010.0,51,53,75,77
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacOkhutsk_1000m.001.ps',39,1000.0,48,52,76,82
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacOkhutsk_0010m.001.ps',59,0010.0,48,52,76,82
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacSeaJapan_1000m.001.ps',39,1000.0,45,50,72,75
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NWpacSeaJapan_0010m.001.ps',59,0010.0,45,50,72,75
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NpacBeringReg_1000m.001.ps',39,1000.0,57,66,78,84
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_NpacBeringReg_0010m.001.ps',59,0010.0,57,66,78,84
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_45-90N_1000m.001.ps',39,1000.0,0,99,77,114
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_45-90N_0010m.001.ps',59,0010.0,0,99,77,114
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_45-90S_1000m.001.ps',39,1000.0,0,99,0,19
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_45-90S_0010m.001.ps',59,0010.0,0,99,0,19
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_25S-25N_1000m.001.ps',39,1000.0,0,99,27,71
+plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_25S-25N_0010m.001.ps',59,0010.0,0,99,27,71
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_glob_0010m.001.ps',59,0010.0,0,99,0,210
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_glob_1000m.001.ps',39,1000.0,0,99,0,210
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_45S-45N_0010m.001.ps',59,0010.0,0,99,20,76
+;plot_vertprofreg_kvo2tempsalt,'jkm.001.pop.h.0200.nc','vertKVo2tempsalt_45S-45N_1000m.001.ps',39,1000.0,0,99,20,76
+
+
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_45_90s_1000m.001.ps',39,1000.0,0,99,0,19
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_45_90n_1000m.001.ps',39,1000.0,0,99,77,114
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_45_90s_001m.001.ps',32,510.0,0,99,0,19
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_45_90n_001m.001.ps',32,510.0,0,99,77,114
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_25s_25n_1000m.001.ps',39,1000.0,0,99,27,71
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_35s_35n_001m.001.ps',32,001.0,0,99,23,74
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_35s_35n_250m.001.ps',23,250.0,0,99,23,74
+
+
+
+
+.run idl_plot_vertprof_woa.progs
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20_001m.001.ps',32,001.0, 20.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20_001m.001.ps',32,001.0, 20.0
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20_1000m.001.ps',39,1000.0, 20.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20_1000m.001.ps',39,1000.0, 20.0
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20_2000m.001.ps',45,2000.0,20.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20_2000m.001.ps',45,2000.0,20.0
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20_4200m.001.ps',55,4200.0,20.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20_4200m.001.ps',55,4200.0,20.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz20_0010m.001.ps',59,0010.0,20.0
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz20_0010m.001.ps',59,0010.0,20.0
+
+.run idl_plot_vertprof_woa.progs
+;plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz40_001m.001.ps',32,001.0,40.0
+;plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz40_001m.001.ps',32,001.0,40.0
+;plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz40_1000m.001.ps',39,1000.0,40.0
+;plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz40_1000m.001.ps',39,1000.0,40.0
+;plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz40_2000m.001.ps',45,2000.0,40.0
+;plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz40_2000m.001.ps',45,2000.0,40.0
+
+.run idl_plot_vertprof_woa.progs
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz10_001m.001.ps',32,001.0,10.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz10_001m.001.ps',32,001.0,10.0
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz10_1000m.001.ps',39,1000.0,10.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz10_1000m.001.ps',39,1000.0,10.0
+plot_vertprof_no3po4sio2_woa_omz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013omz10_2000m.001.ps',45,2000.0,10.0
+plot_vertprof_no3po4sio2_woa_nonomz,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013nonomz10_2000m.001.ps',45,2000.0,10.0
+
+
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_250m.001.ps',23,300.0
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_001m.001.ps',32,001.0
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_1000m.001.ps',39,1000.0
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_2000m.001.ps',45,2000.0
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_4200m.001.ps',55,4200.0
+plot_vertprof_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_0010m.001.ps',59,0010.0
+; EQPAC 210:80W,5S-5N
+lowx,highx,lowy,highy
+;plot_vertprofregmask_nuts_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Eeqpac_1000m.001.ps',39,1000.0,'omzmaskC20',3
+; SO > 60S
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_so60s_1000m.001.ps',39,1000.0,0,99,0,12
+; ETSP OMZ Peru 
+plot_vertprofregmask_nuts_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_ETSP_1000m.001.ps',39,1000.0,'omzmaskC20',2
+; ETNP OMZ 5-25N 150-100W
+plot_vertprofregmask_nuts_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_ETNP_1041m.001.ps',39,1000.0,'omzmaskC20',1
+; SO 45-60S
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_so45_60s_1000m.001.ps',39,1000.0,0,99,13,19
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_45_90s_1000m.001.ps',39,1000.0,0,99,0,19
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_45_90n_1000m.001.ps',39,1000.0,0,99,77,114
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_25s_25n_1000m.001.ps',39,1000.0,0,99,27,71
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_35s_35n_001m.001.ps',32,001.0,0,99,23,74
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_35s_35n_250m.001.ps',23,250.0,0,99,23,74
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_35s_35n_1000m.001.ps',39,1000.0,0,99,23,74
+
+; Arabian Sea 5-25N, 55-77E
+plot_vertprofregmask_nuts_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_omzArab_1041m.001.ps',39,1000.0,'omzmaskC20',6
+; Bay Bengal 7-25, 80-100E
+plot_vertprofregmask_nuts_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_omzBeng_1000m.001.ps',39,1000.0,'omzmaskC20',7
+; SubTrop Pac OMZ 220-300E, 25-45N
+plot_vertprofregmask_nuts_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_SubTropPacOMZ_1041m.001.ps',39,1000.0,'omzmaskC20',4
+; South Atlantic OMZ 220-300E, 25-45N
+; plot_vertprofregmask_nuts_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_SouthAtlOMZ_1000m.001.ps',39,1000.0,'omzmaskC20',8
+; N. Pac 155E-210W, 45-63N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Npac_1000m.001.ps',39,1000.0,53,69,76,84
+; NWPac 155-210E, 45-63N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWpac_1000m.001.ps',39,1000.0,53,59,76,82
+; NWPac 155-210E, 45-63N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWpac_0010m.001.ps',58,0010.0,53,59,76,82
+; N. Pac StatP 142-148W, 47-53N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NpacStatP_1000m.001.ps',39,1000.0,71,72,78,80
+; NH mid-lats all longs, 20-33N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NH20-33N_1000m.001.ps',39,1000.0,0,99,68,72
+; SH Gyres all longs, 20-33S
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_SHgyres_1000m.001.ps',39,1000.0,0,99,24,29
+; Equator all longs, 10S-10N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_equator_1000m.001.ps',39,1000.0,0,99,35,62
+; High Lat. Natl, 40W-20E, 45-60N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Natl_1000m.001.ps',39,1000.0,0,18,81,90
+; Arctic Ocean > 65N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_ARC_1000m.001.ps',39,1000.0,0,99,85,210
+; NPACstorm
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NPACst_1000m.001.ps',39,1000.0,57,63,73,76
+; NW Pac Coastal 150-210E, 55-65N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacCoast_1000m.001.ps',39,1000.0,52,59,79,83
+; NW Pac Low O2 150-210E, 47-62N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacLowO2_1000m.001.ps',39,1000.0,54,57,76,81
+; high O2 area of Okhutsk 145-210E 45-50N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacHiO2_1000m.001.ps',39,1000.0,50,52,76,77
+; sea of Okhutsk 135-155E 45-65N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacOkhutsk_1000m.001.ps',39,1000.0,48,52,76,82
+; Lab Sea 50-65N, 300-315E
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_LabSea_1000m.001.ps',39,1000.0,93,97,84,106
+; NPacsubGyre, 15-30N, 135-300E
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NPacSGyre_1000m.001.ps',39,1000.0,48,73,66,72
+; Sargasso Sea 70-40W, 15-30N
+;plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NAtlSG_1000m.001.ps',39,1000.0,91,99,66,73
+; SPacsubGyre, 15-30N, 135-300E
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_SPacSGyre_1000m.001.ps',39,1000.0,48,73,25,31
+; high lat NW Atl (300-350E, 45-60N)
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWatl_1100m.001.ps',39,1000.0,93,99,80,96
+; high lat NW Atl (350E-420E, 45-60N)
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NEatl_1100m.001.ps',39,1000.0,0,12,80,90
+; N. Pac StatP 142-148W, 47-53N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NpacStatP_0010m.001.ps',59,0010.0,71,72,78,80
+; NW Pac Coastal 150-210E, 55-65N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacCoast_0010m.001.ps',59,0010.0,52,59,79,83
+; NW Pac Low O2 150-210E, 47-62N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacLowO2_0010m.001.ps',59,0010.0,54,57,76,81
+; high O2 area of Okhutsk 145-210E 45-50N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacHiO2_0010m.001.ps',59,0010.0,50,52,76,77
+; sea of Okhutsk 135-210E 50-65N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacOkhutsk_0010m.001.ps',59,0010.0,48,52,76,82
+; NWPac Sea of Japan 
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacSeaJapan_1000m.001.ps',39,1000.0,45,50,72,75
+; NWPac Sea of Japan 
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_NWPacSeaJapan_0010m.001.ps',59,5300.0,45,50,72,75
+
+
+
+; NWPac
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWpac_0010m.001.ps',59,0010.0,53,59,76,82
+; N. Pac 155E-210W, 45-63N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Npac_0010m.001.ps',59,0010.0,53,69,76,84
+; N. Pac StationP 142-148W, 47-53N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Npac_0010m.001.ps',59,0010.0,71,72,78,80 
+; NH Gyres all longs, 20-33N
+; NW Pac Low O2 150-210E, 47-62N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacLowO2_0010m.001.ps',59,0010.0,54,57,76,81
+; high O2 area of Okhutsk 145-210E 45-50N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacHiO2_0010m.001.ps',59,0010.0,50,52,76,77
+; sea of Okhutsk 145-210E 45-50N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacOkhutsk_0010m.001.ps',59,0010.0,48,52,76,82
+; sea of Japan 
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacSeaJapan_0010m.001.ps',59,0010.0,45,50,72,75
+; sea of Japan 
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacSeaJapan_1100m.001.ps',39,1000.0,45,50,72,75
+
+
+
+; EQPAC 210:80W,5S-5N
+lowx,highx,lowy,highy
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Eeqpac_1000m.001.ps',39,1000.0,77,88,41,56
+; SO > 60S
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_so60s_1000m.001.ps',39,1000.0,0,99,0,12
+; ESP OMZ Peru 5-18S, 75-90W
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_omzPeru_1000m.001.ps',39,1000.0,85,89,30,41
+; ESP OMZ Chile 20-35S, 70-80W
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_omzChile_1000m.001.ps',39,1000.0,88,91,23,29
+; ENP OMZ 5-25N 150-100W
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_omzENP_001m.001.ps',36,750.0,74,82,56,70
+; SO 45-60S
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_so45_60s_1000m.001.ps',39,1000.0,0,99,13,19
+; Arabian Sea 5-25N, 55-77E
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_omzArab_1000m.001.ps',39,1000.0,26,32,56,70
+; Bay Bengal 7-25, 80-100E
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_omzBeng_1000m.001.ps',39,1000.0,32,38,59,70
+; NWPac 150-210E, 45-60N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWpac_1000m.001.ps',39,1000.0,53,59,76,82
+; N. Pac 155E-210W, 45-63N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Npac_1000m.001.ps',39,1000.0,53,69,76,84
+; N. Pac StationP 142-148W, 47-53N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Npac_1000m.001.ps',39,1000.0,71,72,78,80 
+; NH Gyres all longs, 20-33N
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NHgyres_1000m.001.ps',39,1000.0,0,99,68,72
+; SH Gyres all longs, 20-33S
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_SHgyres_1000m.001.ps',39,1000.0,0,99,24,29
+; Equator all longs, 10S-10N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_equator_1000m.001.ps',39,1000.0,0,99,35,62
+; High Lat. Natl, 40W-20E, 45-60N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Natl_1000m.001.ps',39,1000.0,0,18,81,90
+;  Arctic >55-65N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_ARC_1000m.001.ps',39,1000.0,0,99,85,210
+; NPACstorm
+;plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NPACst_1000m.001.ps',39,1000.0,57,63,73,76
+; Bering 
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NBER_1000m.001.ps',39,1000.0,57,62,77,81
+; NWPac Coastal
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacCoast_1000m.001.ps',39,1000.0,52,59,79,83
+; NW Pac Low O2 150-210E, 47-62N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacLowO2_1000m.001.ps',39,1000.0,54,57,76,81
+; high O2 area of Okhutsk 145-210E 45-50N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacHiO2_1000m.001.ps',39,1000.0,50,52,76,77
+; sea of Okhutsk 145-210E 45-50N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NWPacOkhutsk_1000m.001.ps',39,1000.0,48,52,76,82
+; Lab Sea 50-65N, 300-315E
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_LabSea_1000m.001.ps',39,1000.0,93,97,84,106
+; Sargasso Sea 70-40W, 15-30N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NAtlSG_1000m.001.ps',39,1000.0,91,99,66,73
+; NPacSubGyre 135-300E, 15-30N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_NPacSG_1000m.001.ps',39,1000.0,48,73,66,72
+; SPacSubGyre 135-300E, 15-30N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_SPacSG_1000m.001.ps',39,1000.0,48,73,25,31
+;
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_45_90s_1000m.001.ps',39,1000.0,0,99,0,19
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_45_90n_1000m.001.ps',39,1000.0,0,99,77,114
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_25s_25n_1000m.001.ps',39,1000.0,0,99,27,71
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_BeringWest_1000m.001.ps',39,1000.0,57,59,80,82
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_BeringEast_1000m.001.ps',39,1000.0,60,63,78,81
+; Bering Sea 150-210E,53-63N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_BeringReg_1000m.001.ps',39,1000.0,57,66,78,84
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_BeringReg_0010m.001.ps',59,0010.0,57,66,78,84
+
+.run idl_plot_vertprof_woa.progs
+; full depth Southern Ocean
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_45_90s_0010m.001.ps',58,0010.0,0,99,0,19
+; SO 45-60S
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_so45_60s_0010m.001.ps',58,0010.0,0,99,13,19
+; SO > 60S
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_so60s_0010m.001.ps',58,0010.0,0,99,0,19
+; SO 45-60S
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_so45_60s_0010m.001.ps',58,0010.0,0,99,13,19
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_45_90s_001m.001.ps',58,0010.0,0,99,0,19
+; SO > 60S
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_so60s_0010m.001.ps',58,0010.0,0,99,0,58
+; N. Pac 155E-210W, 45-60N
+plot_vertprofreg_dicalktempsalt,'jkm.001.pop.h.0200.nc','vert_DICALKTS_Npac_0010m.001.ps',58,0010.0,53,69,76,84
+; N. Pac 155E-210W, 45-63N
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_Npac_0010m.001.ps',58,0010.0,53,69,76,84
+; BeringWest (172-210E, 58-64N)
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_BeringW_1000m.001.ps',39,1000.0,57,59,80,82
+; BeringEast (150-210E, 52-58N)
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_BeringE_1000m.001.ps',39,1000.0,60,63,78,81
+; BeringReg (150-210E, 53-63N)
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_BeringReg_1000m.001.ps',39,1000.0,57,66,78,84
+; BeringReg (172-210E, 52-64N)
+plot_vertprofreg_no3po4sio2_woa,'jkm.001.pop.h.0200.nc','vertNutsVsWOA2013_BeringReg_0010m.001.ps',59,0010.0,57,66,78,84
+
+
+.run idl_plot_vertprof_woa.progs
+plot_vertprofregmask_po4o2_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4O2_etnp.001.ps',39,1000.0,'omzmaskC20',1
+plot_vertprofregmask_po4o2_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4O2_etsp.001.ps',39,1000.0,'omzmaskC20',2
+plot_vertprofregmask_po4o2_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4O2_eqPacOMZ.001.ps',39,1000.0,'omzmaskC20',3
+plot_vertprofregmask_po4o2_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4O2_arabOMZ.001.ps',39,1000.0,'omzmaskC20',6
+plot_vertprofregmask_po4o2_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4O2_bengalOMZ.001.ps',39,1000.0,'omzmaskC20',7
+plot_vertprofregmask_po4o2_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4O2_allLowLat25nonOMZ.001.ps',39,1000.0,'omzmaskC20',0
+
+
+plot_vertprofregmask_po4nstar_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4Nstar_etnp.001.ps',39,1000.0,'omzmaskC20',1
+plot_vertprofregmask_po4nstar_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4Nstar_etsp.001.ps',39,1000.0,'omzmaskC20',2
+plot_vertprofregmask_po4nstar_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4Nstar_eqPacOMZ.001.ps',39,1000.0,'omzmaskC20',3
+plot_vertprofregmask_po4nstar_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4Nstar_arabOMZ.001.ps',39,1000.0,'omzmaskC20',6
+plot_vertprofregmask_po4nstar_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4Nstar_bengalOMZ.001.ps',39,1000.0,'omzmaskC20',7
+plot_vertprofregmask_po4nstar_woamod,'jkm.001.pop.h.0200.nc','ModObsPo4Nstar_allLowLat25nonOMZ.001.ps',39,1000.0,'omzmaskC20',0
+
+
+;plot_vertprofregmask_po4o2_woa,'ObsPo4O2_etnp.ps',33,001.0,'omzmaskC20',1
+;plot_vertprofregmask_po4o2_woa,'ObsPo4O2_etsp.ps',33,001.0,'omzmaskC20',2
+;plot_vertprofregmask_po4o2_woa,'ObsPo4O2_eqPacOMZ.ps',33,001.0,'omzmaskC20',3
+;plot_vertprofregmask_po4o2_woa,'ObsPo4O2_arabOMZ.ps',33,001.0,'omzmaskC20',6
+;plot_vertprofregmask_po4o2_woa,'ObsPo4O2_bengalOMZ.ps',33,001.0,'omzmaskC20',7
+;plot_vertprofregmask_po4o2_woa,'ObsPo4O2_allLowLat25nonOMZ.ps',33,001.0,'omzmaskC20',0
+
+
+lab1='WOA nitrate '
+lab2='BEC Nitrate '
+lab3='BEC Ammonium '
+infile1='jkm.001.pop.h.0200.nc'
+outfile='no3_nh4.001.ps'
+.run idl_plot_no3_nh4_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='bioCdeep_ann.001.ps'
+.run idl_plot_bioCdeep_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='bioC_ann.001.ps'
+.run idl_plot_bioC_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='OMZ.001.ps'
+.run idl_plot_OMZs_pop4x3.run
+
+
+PCref = 5.0
+PCrefdiaz=2.5
+Q10 = 1.7
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.001.ps'
+.run idl_plot_phytogrowth_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.diat.001.ps'
+.run idl_plot_phytogrowthDiat_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.sp.001.ps'
+.run idl_plot_phytogrowthSp_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='growth.diaz.001.ps'
+.run idl_plot_phytogrowthDiaz_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='chl_seaw_rungx3v5.001.ps'
+.run idl_seaw_pop4x3.run
+ 
+infile='jkm.001.pop.h.0200.nc'
+Outfile='mort_sp_pop4.001.ps'
+.run idl_plot_mortsp_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='mort_diat_pop4.001.ps'
+.run idl_plot_mortdiat_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='mort_diaz_pop4.001.ps'
+.run idl_plot_mortdiaz_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='Puptake_gx3v7.001.ps'
+.run idl_plot_Puptake_pop4x3.run
+
+.run aDOM.progs
+plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_100m.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_100_315m.001.ps','jkm.001.pop.h.0200.nc',100.0,315.0
+plot_depthrange_DOM_reg,'DOMdatabaseDec2012_gx3v7','DOM_0_315m.001.ps','jkm.001.pop.h.0200.nc',0.0,315.0
+
+minlevel=17
+maxlevel=28
+Depth=' 150-364m'
+infile='jkm.001.pop.h.0200.nc'
+outfile='NSTARvsObs_150-364m.001.ps'
+.run idl_plot_NSTARvsObs_depthrange.run
+
+minlevel=29
+maxlevel=35
+Depth=' 364-671m'
+infile='jkm.001.pop.h.0200.nc'
+outfile='NSTARvsObs_364-671m.001.ps'
+.run idl_plot_NSTARvsObs_depthrange.run
+
+minlevel=15
+maxlevel=35
+Depth=' 150-671m'
+infile='jkm.001.pop.h.0200.nc'
+outfile='NSTARvsObs_150-671m.001.ps'
+.run idl_plot_NSTARvsObs_depthrange.run
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='dom.001.ps'
+;.run idl_plot_DOM_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='DOCprodexport.001.ps'
+;.run idl_plot_DOCprodDOCexport_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinkPONreminDON_100m.001.ps'
+;.run idl_plot_sinkPONreminDON_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinkPOPreminDOP_100m.001.ps'
+;.run idl_plot_sinkPOPreminDOP_pop4x3.run
+
+.run idl_tempsalt_progs
+plot_depthrangeReg_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs_EqPac_3S-3N_0-3000m.001.ps',0,47,44,91,44,53
+plot_depthrangeReg_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs_EqPac_3S-3N_0-3000m.001.ps',0,47,44,91,44,53
+;plot_depthrangeReg_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs_EqPac_3S-6S_0-3000m.001.ps',0,47,44,91,39,43
+;plot_depthrangeReg_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs_EqPac_3S-6S_0-3000m.001.ps',0,47,44,91,39,43
+;plot_depthrangeReg_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs_EqPac_3N-6N_0-3000m.001.ps',0,47,44,91,54,58
+;plot_depthrangeReg_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs_EqPac_3N-6N_0-3000m.001.ps',0,47,44,91,54,58
+;plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_EqPac_3S-3N_0-3000m.001.ps',0,47,44,91,44,53
+;plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_EqPac_3S-3N_0-3000m.001.ps',0,47,44,91,44,53
+;plot_depthrangeReg_no3Vobs,'jkm.001.pop.h.0200.nc','no3Vobs_EqPac_3S-3N_0-3000m.001.ps',0,47,44,91,44,53
+;plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_EqPac_3S-6S_0-3000m.001.ps',0,47,44,91,39,43
+;plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_EqPac_3S-6S_0-3000m.001.ps',0,47,44,91,39,43
+;plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_EqPac_3N-6N_0-3000m.001.ps',0,47,44,91,54,58
+;plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_EqPac_3N-6N_0-3000m.001.ps',0,47,44,91,54,58
+;plot_depthrangeReg_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs_EqInd_3S-3N_0-3000m.001.ps',0,47,21,41,44,53
+;plot_depthrangeReg_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs_EqInd_3S-3N_0-3000m.001.ps',0,47,21,41,44,53
+;plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_EqInd_3S-3N_0-3000m.001.ps',0,47,21,41,44,53
+;plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_EqInd_3S-3N_0-3000m.001.ps',0,47,21,41,44,53
+;plot_depthrangeReg_no3Vobs,'jkm.001.pop.h.0200.nc','no3Vobs_EqInd_3S-3N_0-3000m.001.ps',0,47,21,41,44,53
+;
+;plot_depthrangeEqAtl_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs_EqAtl_3S-3N_0-3000m.001.ps',0,47,44,53
+;plot_depthrangeEqAtl_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs_EqAtl_3S-3N_0-3000m.001.ps',0,47,44,53
+;plot_depthrangeEqAtl_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_EqAtl_3S-3N_0-3000m.001.ps',0,47,44,53
+;plot_depthrangeEqAtl_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_EqAtl_3S-3N_0-3000m.001.ps',0,47,44,53
+;plot_depthrangeEqAtl_no3Vobs,'jkm.001.pop.h.0200.nc','no3Vobs_EqAtl_3S-3N_0-3000m.001.ps',0,47,44,53
+
+.run idl_tempsalt_progs
+; Equator 3S-3N, 0-3000m
+;plot_depthrangeReg_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs_EqAll_3S-3N_0-3000m.001.ps',0,47,0,99,44,53
+;plot_depthrangeReg_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs_EqAll_3S-3N_0-3000m.001.ps',0,47,0,99,44,53
+;plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_EqAll_3S-3N_0-3000m.001.ps',0,47,0,99,44,53
+;plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_EqAll_3S-3N_0-3000m.001.ps',0,47,0,99,44,53
+;plot_depthrangeReg_no3Vobs,'jkm.001.pop.h.0200.nc','no3Vobs_EqAll_3S-3N_0-3000m.001.ps',0,47,0,99,44,53
+
+; Global 244-552m z=23-33
+plot_depthrangeReg_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs13_Glob_244-552m.001.ps',23,33,0,99,44,53
+plot_depthrangeReg_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs13_Glob_244-552m.001.ps',23,33,0,99,44,53
+plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs13_Glob_244-552m.001.ps',23,33,0,99,44,53
+plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs13_Glob_244-552m.001.ps',23,33,0,99,44,53
+plot_depthrangeReg_no3Vobs,'jkm.001.pop.h.0200.nc','no3Vobs13_Glob_244-552m.001.ps',23,33,0,99,44,53
+plot_depthrangeReg_dicVobs,'jkm.001.pop.h.0200.nc','dicVobs_Glob_244-552m_424.ps',23,33,0,99,0,115
+
+
+.run idl_tempsalt_progs
+
+; Global 0-244m z=0-22
+plot_depthrangeReg_tempVobs,'jkm.001.pop.h.0200.nc','tempVobs_Glob_0-244m_424.ps',0,22,0,99,0,115
+plot_depthrangeReg_saltVobs,'jkm.001.pop.h.0200.nc','saltVobs_Glob_0-244m_424.ps',0,22,0,99,0,115
+plot_depthrangeReg_o2Vobs,'jkm.001.pop.h.0200.nc','o2Vobs_Glob_0-244m_424.ps',0,22,0,99,0,115
+plot_depthrangeReg_po4Vobs,'jkm.001.pop.h.0200.nc','po4Vobs_Glob_0-244m_424.ps',0,22,0,99,0,115
+plot_depthrangeReg_no3Vobs,'jkm.001.pop.h.0200.nc','no3Vobs_Glob_0-244m_424.ps',0,22,0,99,0,115
+plot_depthrangeReg_dicVobs,'jkm.001.pop.h.0200.nc','dicVobs_Glob_0-244m_424.ps',0,22,0,99,0,115
+
+
+
+.run idl_no3po4siFe_woa_surf.progs
+plot_log_sur_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNutsVsWOA2013.001.ps'
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_145m_VsWOA2013.001.ps',14
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_Surf_VsWOA2013.001.ps',0
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_250m_VsWOA2013.001.ps',23
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_305m_VsWOA2013.001.ps',26
+plot_log_level_nutrients_data_all,'jkm.001.pop.h.0200.nc','lgNuts_528m_VsWOA2013.001.ps',33
+plot_log_level_SOnutrients_data_all,'jkm.001.pop.h.0200.nc','lgSOsurfNutsVsWOA2013.001.ps',0
+;plot_log_level_SOnutrients_data_all,'jkm.001.pop.h.0200.nc','lgSO155mNutsVsWOA2013.001.ps',15
+;plot_log_level_SOnutrients_data_all,'jkm.001.pop.h.0200.nc','lgSO250mNutsVsWOA2013.001.ps',23
+;plot_log_level_SOnutrients_data_all,'jkm.001.pop.h.0200.nc','lgSO410mNutsVsWOA2013.001.ps',30
+
+
+.run idl_chl_seawifs_progs
+plot_log_surf_chl_data,'jkm.001.pop.h.0200.nc','lgchlVseaw.001.ps'
+
+.run idl_chl_seawifs_progs
+plot_log_surf_chl_nocoast,'jkm.001.pop.h.0200.nc','coastalmask3gp_gx3v7','lgchlVseawnocoast.001.ps'
+
+level=0
+infile='jkm.001.pop.h.0200.nc'
+outfile='tempsalt_0m_gx3v7.001.ps'
+.run idl_plot_tempsalt_layer_pop4x3.run
+
+
+level=19
+infile='jkm.001.pop.h.0200.nc'
+outfile='tempsalt_210m_gx3v7.001.ps'
+.run idl_plot_tempsalt_layer_pop4x3.run
+
+level=26
+infile='jkm.001.pop.h.0200.nc'
+outfile='tempsalt_300m_gx3v7.001.ps'
+.run idl_plot_tempsalt_layer_pop4x3.run
+
+level=32
+infile='jkm.001.pop.h.0200.nc'
+outfile='tempsalt_001m_gx3v7.001.ps'
+;.run idl_plot_tempsalt_layer_pop4x3.run
+
+level=47
+infile='jkm.001.pop.h.0200.nc'
+outfile='tempsalt_2530m_gx3v7.001.ps'
+;.run idl_plot_tempsalt_layer_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+; depth range of 0-100m
+minlevel=0
+maxlevel=10
+outfile='adissFe_v2ObsMasterFe_0_100m.001.ps'
+depthlabel='0-100m '
+.run idl_plot_Fe_Vobsx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+; depth range of 100-504m
+minlevel=10
+maxlevel=32
+outfile='adissFe_v2ObsMasterFe_100_504m.001.ps'
+depthlabel='100-504m '
+.run idl_plot_Fe_Vobsx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+; depth range of 504-1041m
+minlevel=33
+maxlevel=40
+outfile='adissFe_v2ObsMasterFe_504-1041m.001.ps'
+depthlabel='504-1041m '
+.run idl_plot_Fe_Vobsx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+; depth range of 1041-2530m
+minlevel=40
+maxlevel=47
+outfile='adissFe_v2ObsMasterFe_1041-2530m.001.ps'
+depthlabel='1041-2530m '
+.run idl_plot_Fe_Vobsx3.run
+
+infile='jkm.001.pop.h.0200.nc'
+infile2='master_Fe_gx3v7.txt'
+; depth range of 2530-5250m
+minlevel=48
+maxlevel=58
+outfile='adissFe_v2ObsMasterFe_2530-0010m.001.ps'
+depthlabel='2530-5250m '
+.run idl_plot_Fe_Vobsx3.run
+
+minlevel=15
+maxlevel=28
+Depth=' 150-364m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_150-364m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+minlevel=29
+maxlevel=35
+Depth=' 364-671m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_364-671m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+minlevel=36
+maxlevel=37
+Depth=' 671-830m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_671-830m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+minlevel=38
+maxlevel=41
+Depth=' 830-1381m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_830-1381m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+minlevel=42
+maxlevel=48
+Depth=' 1381-2530m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_1381-2530m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+minlevel=49
+maxlevel=52
+Depth=' 2530-3503m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_2530-3503m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+minlevel=15
+maxlevel=35
+Depth=' 150-671m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_150-671m.001.ps'
+.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+*********************************************************************
+*********************************************************************
+isopyc = 1025.0 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1025.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+isopyc = 1025.5 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1025.5.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+isopyc = 1026 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1026.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+isopyc = 1026.5 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1026.5.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+
+isopyc = 1027.0 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1027.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+isopyc = 1027.5 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1027.5.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+isopyc = 1028.0 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1028.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+isopyc = 1028.5 
+Depth=' on '+strmid(strcompress(isopyc,/remove_all),0,7) + ' isopycnal'
+infile='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_iso_1028.5.001.ps'
+.run idl_plot_O2vsObs_isopycnal_pop4x3.run
+
+
+ .run aplotiron.progs
+plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_0-315m.001.ps','jkm.001.pop.h.0200.nc',0.0,315.0
+plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_0_100m.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_100-504m.001.ps','jkm.001.pop.h.0200.nc',100.0,504.0
+plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+plot_depthrange_iron_reg,'master_Fe_gx3v7.txt','aFeMasterFe_504-0010m.001.ps','jkm.001.pop.h.0200.nc',504.0,0010.0
+plot_depthrange_iron_Eeqpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.eeqpac.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+plot_depthrange_iron_NWpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.nwpac.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+plot_depthrange_iron_Weqpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_504m.weqpac.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+plot_depthrange_iron_Weqpac,'master_Fe_gx3v7.txt','aFeMasterFe_100_504m.weqpac.001.ps','jkm.001.pop.h.0200.nc',100.0,504.0
+plot_depthrange_iron_Weqpac,'master_Fe_gx3v7.txt','aFeMasterFe_0_100m.weqpac.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+;plot_depthrange_iron_reg,'GEOTRACES_All_Fe_gx3v7_2014.txt','aFeGEO_0-315m.001.ps','jkm.001.pop.h.0200.nc',0.0,315.0
+;plot_depthrange_iron_reg,'GEOTRACES_All_Fe_gx3v7_2014.txt','aFeGEO_0_100m.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+;plot_depthrange_iron_reg,'GEOTRACES_All_Fe_gx3v7_2014.txt','aFeGEO_100-504m.001.ps','jkm.001.pop.h.0200.nc',100.0,504.0
+;plot_depthrange_iron_reg,'GEOTRACES_All_Fe_gx3v7_2014.txt','aFeGEO_0_504m.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+;plot_depthrange_iron_reg,'clivar_All_gx3v7.txt','aFeCLI_0-315m.001.ps','jkm.001.pop.h.0200.nc',0.0,315.0
+;;plot_depthrange_iron_reg,'clivar_All_gx3v7.txt','aFeCLI_0_100m.001.ps','jkm.001.pop.h.0200.nc',0.0,100.0
+;plot_depthrange_iron_reg,'clivar_All_gx3v7.txt','aFeCLI_100-504m.001.ps','jkm.001.pop.h.0200.nc',100.0,504.0
+;plot_depthrange_iron_reg,'clivar_All_gx3v7.txt','aFeCLI_0_504m.001.ps','jkm.001.pop.h.0200.nc',0.0,504.0
+
+.run sedtrapPOP4.progs
+plot_depthrange_annpoc_reg, 'trapdatabase5.2009annTS_gx3v7','trapAnnBEC.VX2.001.ps','jkm.001.pop.h.0200.nc',0.0,0010.0
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='dicalk_glodap_gx3v7.001.ps'
+;.run idl_plot_dicalk_glodap_gx3v7.run
+ 
+infile1='jkm.001.pop.h.0200.nc'
+outfile='exportratio.001.ps'
+.run idl_plot_exportratio_pop4.run
+
+infile='jkm.001.pop.h.0200.nc'
+level1= 6
+level2= 7
+level3= 8
+level4= 9
+label1='A) BEC Chlorophyll 60-70m'
+label2='B) BEC Chlorophyll 70-80m'
+label3='C) BEC Chlorophyll 80-90m'
+label4='D) BEC Chlorophyll 90-100m'
+outfile='chl_depth60-100m.001.ps'
+.run idl_plot_chldepth_pop4x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+level1= 5
+level2= 9
+level3= 12
+level4= 14
+label1='A) BEC Chlorophyll 50-60m'
+label2='B) BEC Chlorophyll 90-100m'
+label3='C) BEC Chlorophyll 120-130m'
+label4='D) BEC Chlorophyll 140-150m'
+outfile='chl_depth90-150m.001.ps'
+.run idl_plot_chldepth_pop4x3.run
+
+
+
+infile='jkm.001.pop.h.0200.nc'
+level1= 2
+level2= 3
+level3= 4
+level4= 5
+label1='A) BEC Chlorophyll 20-30m'
+label2='B) BEC Chlorophyll 30-40m'
+label3='C) BEC Chlorophyll 40-50m'
+label4='D) BEC Chlorophyll 50-60m'
+outfile='chl_depth20-60m.001.ps'
+.run idl_plot_chldepth_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='diaz_percentNuptake.001.ps'
+.run idl_plot_diaz_Nuptake_pop4x3.run
+
+minlevel=17
+maxlevel=35
+Depth=' 150-671m'
+infile1='jkm.001.pop.h.0200.nc'
+outfile='O2vsObs_150-671m.001.ps'
+;.run idl_plot_O2vsObs_depthrange_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='no3po4_gx3v7.001.ps'
+.run idl_plot_no3po4_woa_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='no3po4_504m_gx3v7.001.ps'
+Level=32
+.run idl_plot_no3po4_woa_level.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='no3po4_50-60m_gx3v7.001.ps'
+Level=4
+.run idl_plot_no3po4_woa_level.run
+
+SinkDepth='100'
+level=10
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_mass_100m.001.ps'
+.run idl_plot_sinkingMassFlux_x3.run
+
+SinkDepth='504'
+level=33
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_mass_504m.001.ps'
+.run idl_plot_sinkingMassFlux_x3.run
+
+SinkDepth='50'
+level=5
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_mass_50m.001.ps'
+.run idl_plot_sinkingMassFlux_x3.run
+
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='no3po4_125m_gx3v7.001.ps'
+Level=12
+.run idl_plot_no3po4_woa_level.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='percentprod_gx3v7.001.ps'
+.run idl_plot_percentprod_pop4x3.run
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='denitrifDepth_gx3v7.001.ps'
+.run idl_plot_DenitrifDepth_pop4x3.run
+
+infile='jkm.001.pop.h.0200.nc'
+outfile='sio2_gx3v7.001.ps'
+.run idl_plot_sio2_woa_pop4x3.run
+
+.run idl_limnutrients_pop4
+limnutsAnn_3phyto_nolight_deg,'jkm.001.pop.h.0200.nc','limnuts_jkm.001.ps',Runname
+
+infile='jkm.001.pop.h.0200.nc'
+Outfile='phyto_ratios.001.ps'
+.run idl_plot_phytoratios_pop4x3.run
+
+SinkDepth='2075'
+level=48
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_export_2075m.001.ps'
+.run idl_plot_sinkingFlux_pop4x3.run
+
+SinkDepth='1041'
+level=40
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_export_1041m.001.ps'
+.run idl_plot_sinkingFlux_pop4x3.run
+
+SinkDepth='504'
+level=33
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_export_504m.001.ps'
+.run idl_plot_sinkingFlux_pop4x3.run
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='nfixdenitrif_gx3v7.001.ps'
+;outfile2='rungx3v5.343_nfixdenitrif_sums'
+;.run idl_plot_NfixDenitrif_pop4x3.run
+
+infile1='jkm.001.pop.h.0200.nc'
+outfile='CO2airsea_pop4.001.ps'
+.run idl_plot_airseaCO2_pop4x3.run
+
+SinkDepth='100'
+level=10
+infile='jkm.001.pop.h.0200.nc'
+outfile='sinking_export_100m.001.ps'
+.run idl_plot_sinkingFlux_pop4x3.run
+
+
+infile1='jkm.001.pop.h.0200.nc'
+Outfile='nfixdenitrifSed_gx3v7.001.ps'
+;outfile2='rungx3v5.343_nfixdenitrif_sums'
+.run idl_plot_NfixDenitrifWsed_pop4x3.run
+
+
+infile1='jkm.001.pop.h.0200.nc'
+outfile='z_exportratio.001.ps'
+outfile2='zexportratio.001'
+outfile3='NPP.030'
+.run idl_plot_z_exportratio.run
+
+
+
+
+
+
+

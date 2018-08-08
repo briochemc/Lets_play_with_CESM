@@ -104,17 +104,17 @@ The key subroutine is `ecosys_set_interior`, which updates the biogeochemical si
 - `ocn.ecosys.setup.csh` sets up the  variables to be saved in output files.
 - `gdev.jkm.001.slurm` the main file that actually runs the model, i.e., what you submit to the job scheduler on greenplanet.
 The number of processors listed in this file must match what you used in the `NOTES_12_12` (note: `12_12` for 12 nodes with 12 CPUs each) file to set up and compile the simulation.
-When setting up new runs you should edit the jobname, the name of the slurm script to match the new simulation name (i.e., for your second job, edit `gdev.xyz.001` into `gdev.xyz.002`), and the directory path that currently says `/lustre/SCRATCH/moore/USERID/cesm_runs/gdev.jkm.001.slurm` (outdated!).
+When setting up new runs you should edit the jobname, the name of the slurm script to match the new simulation name (i.e., for your second job, edit `gdev.xyz.001` into `gdev.xyz.002`), and the directory path that currently says `/DFS-L/SCRATCH/moore/USERID/cesm_runs/gdev.jkm.001.slurm` (outdated!).
  (At NCAR this is `gdev.jkm.001.run`?).
 
 
 ### Files: model-run output data (outdated)
 The model-run output data files are written in two directories, which are automatically created (outdated!)
-- `/lustre/SCRATCH/moore/USERID/gdev.xyz.001/run/` where the model actually runs: Initially, all output files are written to this directory.
-- `/lustre/SCRATCH/moore/USERID/archive/gdev.xyz.001/` long term storage of the model output and the restart files (note that the path is different from the run/ directory).
+- `/DFS-L/SCRATCH/moore/USERID/gdev.xyz.001/run/` where the model actually runs: Initially, all output files are written to this directory.
+- `/DFS-L/SCRATCH/moore/USERID/archive/gdev.xyz.001/` long term storage of the model output and the restart files (note that the path is different from the run/ directory).
 Output files from simulations are automatically copied here at the end of the simulation.
 
-After the model has been run, the data files (NetCDF) containing the data to plot for, e.g., the ocean, are located in `/lustre/SCRATCH/moore/USERID/archive/gdev.xyz.001/ocn/hist/` (you can delete some files if the model run was not good as long as you take notes).
+After the model has been run, the data files (NetCDF) containing the data to plot for, e.g., the ocean, are located in `/DFS-L/SCRATCH/moore/USERID/archive/gdev.xyz.001/ocn/hist/` (you can delete some files if the model run was not good as long as you take notes).
 You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.nc` (standard annually-averaged ocean-model output files) or `gdev.xyz.001.pop.h.0001-01.nc` (same but monthly-averaged).
 
 - Note 1: There are other output directories, such as `/ice` (for sea ice), `/atm` (for atmosphere), etc.
@@ -122,42 +122,84 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
 
 ### Starting a new CESM simulation (and use git to version-control it)
 1. Make a new local directory on your laptop called `xyz.001`, except replace `xyz` with your initials.
-2. There are samples directories with files to setup and run the model (on 12 of the 12cpu nodes in the `new2.8` queue) at `/DFS-L/DATA/moore/jkmoore/CESM1.98/SourceCode_gx3v7/SampleNotes/`.
-Copy all the files from the SampleNotes/ directory to your new local `/gdev.xyz.001/` directory.
-The files you just copied are:
+    (The `001` is obviously for your first run, so don't forget to increment it for the next runs!)
+
+1. Copy and paste the following to load the modules for the compilers, to read and write netcdf files, and to use IDL:
+    ```
+    module load intel/2018.2 openmpi/3.0.1 netcdf/4.6.1
+    ml idl
+    ```
+    Ideally this would go in a dotfile in your setup so that there is no need to load these modules every single time. 
+    (Although it might be good for remembering what you are actualling using?)
+
+1. There are samples directories with files to setup and run the model on 12 of the 12cpu nodes in the `nes2.8` queue at `/DFS-L/DATA/moore/jkmoore/CESM1.98/SourceCode_gx3v7/SampleNotes/`.
+    (The old queues, `moore_fast`, `moore_fast6`, and `moore_fast8`, are now called `nes2.8` and `sib2.9` - no idea why)
+    I copied all the files from the `SampleNotes/` directory to an example `xyz.000` subdirectory of this repository.
+    You should copy those files for every new run of yours, using your initials instead of `xyz`, and starting from `001` for your first run, `002` for the second, and so on.
+    Among the files you just copied are:
+
     - `NOTES_12_12` a copy/paste script for starting a new job.
-    This script contains code for both running the model and plotting output.
-    For this first step, you should just run the model.
+        This script contains code for both running the model and plotting output.
+        For this first step, you should just run the model.
+
+    - `jkm.001_12_12.slurm` the batch execution file you submit to the scheduler to run the model.
+        (More info on the slurm scheduler on greenplanet [here](https://ps.uci.edu/greenplanet/).)
+        You can submit the job to the scheduler with the sbatch command, i.e., when in greenplanet in the main node, type
+
+        ```
+        $ sbatch ./jkm.001_12_12.slurm
+        ```
+
+    - `AAverage_gdev_001` script to cut and paste to average the last 20 years of the simulation.
+    Model years 291–310 corresponds to NCEP forcing for the 1990–2009 period (after five times through the (1948-2009) NCEP reanalysis forcings).
+
     - `arun_idl_gdev_001` a large number of IDL plotting routines that work on annual model output files.
-    After the model has run, you can start IDL and then copy and paste individual routines from `arun_idl_gdev_001` or enter `@arun_idl_gdev_001` directly to execute all the commands in the file and plot everything.
-    - `gdev.001.slurm` the batch execution file you submit to the scheduler to run the model.
-    (More info on the slurm scheduler on greenplanet [here](https://ps.uci.edu/greenplanet/).)
-    You can submit the job to the scheduler with the sbatch command, i.e., when in greenplanet in the main node, type sbatch `./gdev.001.slurm`.
-    - `AAverage_gdev_001` script to cut and paste to average the last 20 years of the simulation (model years 291–310 corresponds to NCEP forcing for the 1990–2009 period)
-3. In `gdev.001.slurm`, edit the job name (twice) and and the directory path.
-4. In `NOTES_12_12`, edit `USERID`, the job name, and the length of the run (the number of years).
-5. Copy and paste up to the Comments to build? or compile? and run your first job.
-Do not plot right away as you need to setup the directories for plotting (right?).
-6. Once your job has been submitted, you can directly type the following in the console:
+        After the model has run, you can start IDL and then copy and paste individual routines from `arun_idl_gdev_001` or enter
+
+        ```
+        $ @arun_idl_gdev_001
+        ```
+
+        directly to execute all the commands in the file and plot everything.
+
+    - `arun_idl_min_001` IDL scripts, has just the most commonly used plotting routines.
+
+1. In `jkm.001_12_12.slurm`, edit the job name (twice) and and the directory path.
+
+1. In `NOTES_12_12`, edit `USERID`, the job name, and the length of the run (the number of years).
+
+1. Copy and paste up to the Comments to build? or compile? and run your first job.
+    Do not plot right away as you need to setup the directories for plotting (right?).
+
+1. Once your job has been submitted, you can directly type the following in the console:
     - `squeue` to list all jobs currently running on greenplanet
     - `squeue –u jkmoore` to list all jobs submitted by `jkmoore` currently running (`u` is for user)
     - `squeue –q moore_fast6` to list all jobs in the `moore_fast6` (outdated!) queue. The output at command line should look like:
 
-    ```
-    JobID             USER       QUEUE     Jobname       NDS  ElapTime
-    99999.greenplane  jkmoore    moore     qdev.ell.001  8    1:05
-    ```
+        ```
+        JobID             USER       QUEUE     Jobname       NDS  ElapTime
+        99999.greenplane  jkmoore    moore     qdev.ell.001  8    1:05
+        ```
 
     - `scancel 99999` stops/kills the job with the ID `99999` that is running.
-(Use the job ID you get from `qstat –u youruserid`?)
+        (Use the job ID you get from `qstat –u youruserid`?)
     - `sbatch ./gdev.jkm.001.slurm` submits the job to the scheduler.
-It will go in a queue and run whenever the scheduler decides it can run.
-(You should have already submitted your job at this point.)
-Note: commands to use on Yellowstone are different. Example use:
-`./gdev.jkm.001.submit`
-7. Connect via `ssh` to `gplogin1.ps.uci.edu` or to `gplogin3.ps.uci.edu.` (outdated!)
-Note: from off campus you have to connect using a VPN, see www.libraries.uci.edu, click on button on upper left of page that says "Connect from Off Campus" and install the VPN software on your home PC.
-**DO NOT** download any illegal content while on the VPN! (music, movies, etc. - UCI will notice!)
+        It will go in a queue and run whenever the scheduler decides it can run.
+        (You should have already submitted your job at this point.)
+        Note: commands to use on Yellowstone are different. Example use:
+        `./gdev.jkm.001.submit`
+
+1. Connect via `ssh` to `gplogin2.ps.uci.edu` (`gplogin1` and `gplogin3` go to the old machine).
+    I personnaly have added the following to my laptop's `.bashrc`:
+    ```
+    gp2='ssh USERID@gplogin2.ps.uci.edu'
+    ```
+    so that I connect to `gplogin2` by simply typing in my laptop's CLI terminal:
+    ```
+    $ gp2
+    ```
+    Note: from off campus you have to connect using a VPN, see www.libraries.uci.edu, click on button on upper left of page that says "Connect from Off Campus" and install the VPN software on your home PC.
+    **DO NOT** download any illegal content while on the VPN! (music, movies, etc. - UCI will notice!)
 
 ### Other files (not sure what this is - have not used it yet)
 There are other files that will be copied to your scripts directory that you might need to edit in the future:
@@ -198,8 +240,8 @@ Example: `poplatlong_x3,-10.0,140.0,x,y` will return x grid location in the vari
 
 #### How to use IDL for the model
 1. Create under your user account the directories:
-    - `/lustre/SCRATCH/moore/USERID/plotdirs/` with subdirectories `plotannx3/` and `plottrendx3/` (oudated!).
-    - `/lustre/SCRATCH/moore/USERID/popoutx3`  and `/lustre/SCRATCH/moore/USERID/popoutx1` should be used to store the output plotting files (generated in the `plotdirs/`), with one subdirectory for each simulation.
+    - `/DFS-L/SCRATCH/moore/USERID/plotdirs/` with subdirectories `plotannx3/` and `plottrendx3/` (oudated!).
+    - `/DFS-L/SCRATCH/moore/USERID/popoutx3`  and `/DFS-L/SCRATCH/moore/USERID/popoutx1` should be used to store the output plotting files (generated in the `plotdirs/`), with one subdirectory for each simulation.
 That is, for a given year of simulation, `gdev.xyz.001.yr30`.
 2. On your local machine create a directory, `/pophome/gdev.jkm.001/`, that contains all the files in my sample directory (?).
 You'll need to copy to the scripts directory on greenplanet when setting up a new simulation (?).
@@ -210,7 +252,7 @@ In this local copy of the scripts directory, will be the following files
 3. To start IDL, type `idl` in the command-line console after connecting via `ssh` to greenplanet:
 
     ```
-    [USERID@gplogin1 ~]$ idl
+    $ idl
     IDL Version 8.1 (linux x86_64 m64). (c) 2011, ITT Visual Information Solutions
     Installation number: XXXXXXX-X.
     Licensed for use by: UC Irvine
@@ -238,7 +280,7 @@ In this local copy of the scripts directory, will be the following files
     IDL> .run extraction.V3
     ```
 
-Note: A quirk of IDL is that array index notation starts with `0`, not `1`, as in Fortran. 
+Note: A quirk of IDL is that array index notation starts with `0`, not `1`, as in Fortran.
 Thus, to to access all values of the nitrate array, you need to scroll through `x=0` to `99`, `y=0` to `115`, and `z=0` to `59`.
 
 ### Key directories on your local desktop/laptop machine (outdated?)
