@@ -6,19 +6,19 @@ setenv CCSMUSER             jkmoore
 setenv CASE_DST             gdev.001
 
 setenv SCRIPT_DIR_BASE_DST /DFS-L/SCRATCH/moore/${CCSMUSER}/cesm_runs
+cd /DFS-L/DATA/moore/jkmoore/cesm1_2_2/scripts
 
-cd /DFS-L/DATA/moore/${CCSMUSER}/cesm1_2_2/scripts
 
 ./create_newcase -case ${SCRIPT_DIR_BASE_DST}/${CASE_DST} -res T62_gx3v7 -compset CIAF -mach greenplanet16nOp -pes_file /DFS-L/DATA/moore/jkmoore/CESM1.98/SourceCode_gx3v7/env_mach_pes8_20node.xml
 
-cd /DFS-L/DATA/moore/${CCSMUSER}/CESM1.98/SourceCode_gx3v7
+cd /DFS-L/DATA/moore/jkmoore/CESM1.98/SourceCode_gx3v7
 cp pop_decomp.xml ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/Tools/Templates
 cp env_run.xml.cesm1.2.2.startup.newOp.atmbox ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/env_run.xml
 cd ${SCRIPT_DIR_BASE_DST}/${CASE_DST}
 ./xmlchange -file env_build.xml -id OCN_TRACER_MODULES -val "iage ecosys"
 ./cesm_setup
 
-cd /DFS-L/DATA/moore/${CCSMUSER}/CESM1.98/SourceCode_gx3v7
+cd /DFS-L/DATA/moore/jkmoore/CESM1.98/SourceCode_gx3v7
 cp env_build.xml8_20nodes.newOp ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/env_build.xml
 cp user_nl_pop2.onestream ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/user_nl_pop2
 cp hmix_gm.F90.cesm1.98.1 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/hmix_gm.F90
@@ -29,16 +29,18 @@ cp ecosys_mod.F90.cesm1.98.1.constCO2 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceM
 cp ocn.ecosys.tavg.csh.cesm1.98 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/ocn.ecosys.tavg.csh
 cp namelist_defaults_pop2.xml.cesm1.98.1 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/namelist_defaults_pop2.xml
 cp namelist_definition_pop2.xml.cesm1.98 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/namelist_definition_pop2.xml
-cp build-namelist.cesm1.98.atmbox ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/build-namelist
-cp restart.F90.atmbox ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/restart.F90
-cp io*F90 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/
 cp box_atm_trace_gas_mod.F90.atmbox ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/box_atm_trace_gas_mod.F90
+cp io*F90 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/
+cp restart.F90.atmbox ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/restart.F90
+cp build-namelist.cesm1.98.atmbox ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/SourceMods/src.pop2/build-namelist
 cp pop2.buildexe.csh.cesm1.98 ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/Buildconf/pop2.buildexe.csh
 cp Makefile ${SCRIPT_DIR_BASE_DST}/${CASE_DST}/Tools/Makefile
 cd ${SCRIPT_DIR_BASE_DST}/${CASE_DST}
 ./xmlchange -file env_build.xml -id OCN_TRACER_MODULES -val "iage ecosys"
 
-# STOP, manually copy over .run file and any edited BGC file to /SourceMods/src.pop2
+# STOP, manually copy over .run file and any edited BGC file tos /SourceMods/src.pop2 
+
+
 
 ./xmlchange -file env_run.xml -id STOP_OPTION -val nmonth
 ./xmlchange -file env_run.xml -id STOP_N      -val 744
