@@ -7,7 +7,7 @@ The model can run just the ocean component, or ocean-sea ice components, with fo
 When forcing with the NCEP/NCAR reanalysis data, the model repeatedly cycles through all available years (current 1948–2009).
 Running the model five times through this 62-year cycle, or 310 years, is enough to fully spin-up upper ocean biogeochemistry and physics.
 
-## Model Grid
+#### Model Grid
 Ocean component comes in two grid resolutions:
 - `gx1v6` – approximately 1 degree resolution horizontally (320x384x60)
 - `gx3v7` – approximately 3 degree resolution horizontally (100x116x60)
@@ -20,107 +20,83 @@ This improves Arctic ocean circulation, and provides higher resolution in the wa
 
 ![grid image](http://www.cesm.ucar.edu/models/cesm1.0/cesm/cesm_doc_1_0_4/greenland_pole_grid.jpg)
 
-## Types of CESM simulations
+#### Types of CESM simulations
 - Startup – brand new run starting from already-built initialization files (i.e., WOA nutrients, etc...)
 - Branch – initializes the model using output from another simulation.
 - Hybrid – some mix of the two, e.g., sea ice is in startup mode but the ocean tracers branch from another run.
 
-## Running CESM and plotting data
+#### Running CESM and plotting data (incomplete - don't read yet)
 There is a number of key directories containing all the files needed to run the model and plot figures of the output.
-On greenplanet (more info on greenplanet [here](https://ps.uci.edu/greenplanet/)), there are 4 main directories, each with a set of subdirectories and files, serving a specific purpose:
+On Greenplanet (more info on Greenplanet [here](https://ps.uci.edu/greenplanet/)), there are 4 main directories, each with a set of subdirectories and files, serving a specific purpose:
 - the Model code – contains the model FORTRAN code, i.e. the algorithms that define the model.
 - the Model output – contains the NetCDF files that the model outputs.
 - the Plotting code – contains the IDL code for plotting.
 - the Plotting output – contains the output of IDL routines?
 
-## Running the model
-The purpose here is to run the model, i.e., time-step it to see how the earth system evolves.
 
+## Directory structures 
 
-### Directories already there in J. Keith Moore's directory
-```
+On Greenplanet, these are some of the directories and files of J. Keith Moore (JKM) that you will either use without modifying them, or that you will copy to your space and edit:
+```bash
 /DFS-L/DATA/moore/jkmoore/
-  ├── cesm1_2_2
-  ├── CESM1.98
-  │   └── SourceCode_gx3v7
-  ├── gx1v6_inputs
-  ├── gx3v7_inputs
-  ├── gcommon1.2
-  ├── plotannx1
-  ├── plotannx3
-  ├── plotmonthx1
-  ├── plotmonthx3
-  ├── plottrendx1
-  ├── plottrendx3
+  ├── cesm1_2_2              # standard CESM 1.2.2 model code from NCAR (Do not edit!)
+  ├── CESM1.98               # one of JKM's CESM modified versions
+  │   └── SourceCode_gx3v7                # contains non-standard code you will use
+  │       │
+  │       ├── SampleNotesCESM1.98.1
+  │       │   ├── gdev.001.slurm
+  │       │   └── NOTES_20_8_Startup
+  │       │
+  │       ├── hmix_gm.F90.cesm1.98.1            # Example of non-standard "mod" for mixing
+  │       ├── ecosys_parms.F90.cesm1.98.1       # Other example for exosystem parameters
+  │       ├── ecosys_mod.F90.cesm1.98.1.atmbox  # Other example for exosystem formulation
+  │       ...                                   # (There are many other files not listed here)
+  │
+  ├── gx1v6_inputs      # input files for the (ocean) 1x1 deg. resolution model
+  ├── gx3v7_inputs      # same for the 3x3 resolution
+  │
+  ├── gcommon1.2        # commonly used non-standard CESM files for the coarse x3 grid
+  │
+  ├── plotannx1         #
+  ├── plotannx3         # plotting routines for annually or monthly averaged,
+  ├── plotmonthx1       # 1x1 or 3x3 model output, and so on...
+  ├── plotmonthx3       #
   ...
 ```
-- `cesm1_2_2` contains the standard CESM 1.2.2 model code downloaded from NCAR.
-We never edit or modify the files in this directory.
-Everyone can access from this location.
-- `gx3v7_inputs` contains input files for the gx3v7 ocean model (coarse 3x3 deg. resolution).
-- `gx1v6_inputs` contains input files for the gx1v6 ocean model (fine 1x1 deg. resolution).
-- `gcommon1.2` contains commonly used non-standard CESM files for the coarse x3 grid.
-- `SourceCode_gx3v7` contains non-standard code for J. Keith Moore's locally modified code version.
-This is the version you should use for now (what about CESM2.0?).
+CESM1.98.1's non-standard code in `SourceCode_gx3v7` is the version you will use.
 The biogeochemistry is nearly identical to the code going into the CESM2.0, in terms of the scientific equations, but the software architecture will change quite a bit in CESM2.0 (to be released in 2018).
-This is also where the `sampleNOTES` directory is (to be used for running and plotting).
-- `plotannx1`, `plotannx3`, and so on, contain J. Keith Moore's plotting routines.
-(You will copy those to your own plotting directory)
 
-### Directories you have to create if you want to run the model
-Your `USERID` will determine the path of the directory where the files you use and create as you run CESM are living.
-The `DATA` space is for important files and the `SCRATCH` space is where the model will run and output will be stored.
-Output that you want to keep long term should be moved to the `DATA` equivalent.
-
+You should have personal two personal spaces named after your `USERID` on Greenplanet:
 ```
+/DFS-L
+ ├── DATA/moore/USERID/
+ └── SCRATCH/moore/USERID/
+```
+If not, contact hpcops@uci.edu.
+(The `DATA` space is for important files and the `SCRATCH` space is where the model will run and output will be stored.)
+
+
+In your own `SCRATCH` space on Greenplanet will be the following directories.
+(If it is your first run, those will not exist at the beginning.)
+
+```bash
 /DFS-L/SCRATCH/moore/USERID/
-  ├── IRF_runs
-  ├── cesm_runs
-  ├── archive
+  ├── cesm_runs          # files to run the model
+  │   │                  # (automatically during model build and compilation)
+  │   ├── xyz.001             # files for 1st run (xyz are your initials)
+  │   ├── xyz.002             #           2nd run
+  │   ├── xyz.003             #     and so on...
+  │   ...
+  │
+  ├── archive            # where the model output is copied at the end of the simulation
+  │
+  ├── IRF_runs           # runs that produce transport matrices? (TBC)
   ...
 ```
 
-- `cesm_runs` is the scripts directory, we put files here when running the model to tell CESM which non-standard files to use, how many years to run, etc.
-One subdirectory for each model run, e.g., `gdev.xyz.001` for your first run (`xyz` are your initals. Why `gdev`?).
-This directory is created automatically during model build and compilation?
-- `archive` is the directory where the model output files are copied at the end of simulation.
-- `IRF_runs` is for model runs that produce transport matrices.
-Maybe make sure that the transport matrices produced are stored in `DATA`?
-
-```
-/DFS-L/DATA/moore/USERID/
-  ├── plotannx3
-  ...
-```
-
-- `plotannx3` is the plotting routines (you should copy it from `/DFS-L/DATA/moore/jkmoore` - I have no idea why.)
-
-### Files: data and code to run the model
-Look for them in `/gdata/mooreprimeau/CESM_CODE/CESM1.97/` (outdated!)
-- `ecosys_parms.F90` sets the values of key parameters in the model.
-- `ecosys_mod.F90`, the ecosystem/biogeochemical model code.
-The key subroutine is `ecosys_set_interior`, which updates the biogeochemical sink/source terms.
-- `namelist_defaults_pop2.xml` sets the value of some parameters at runtime, overrides values (careful!) in `ecosys_parms.F90`  (will replace `ecosys_parms` in future model versions).
-- `ocn.ecosys.setup.csh` sets up the  variables to be saved in output files.
-- `gdev.jkm.001.slurm` the main file that actually runs the model, i.e., what you submit to the job scheduler on greenplanet.
-The number of processors listed in this file must match what you used in the `NOTES_12_12` (note: `12_12` for 12 nodes with 12 CPUs each) file to set up and compile the simulation.
-When setting up new runs you should edit the jobname, the name of the slurm script to match the new simulation name (i.e., for your second job, edit `gdev.xyz.001` into `gdev.xyz.002`), and the directory path that currently says `/DFS-L/SCRATCH/moore/USERID/cesm_runs/gdev.jkm.001.slurm` (outdated!).
- (At NCAR this is `gdev.jkm.001.run`?).
 
 
-### Files: model-run output data (outdated)
-The model-run output data files are written in two directories, which are automatically created (outdated!)
-- `/DFS-L/SCRATCH/moore/USERID/gdev.xyz.001/run/` where the model actually runs: Initially, all output files are written to this directory.
-- `/DFS-L/SCRATCH/moore/USERID/archive/gdev.xyz.001/` long term storage of the model output and the restart files (note that the path is different from the run/ directory).
-Output files from simulations are automatically copied here at the end of the simulation.
-
-After the model has been run, the data files (NetCDF) containing the data to plot for, e.g., the ocean, are located in `/DFS-L/SCRATCH/moore/USERID/archive/gdev.xyz.001/ocn/hist/` (you can delete some files if the model run was not good as long as you take notes).
-You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.nc` (standard annually-averaged ocean-model output files) or `gdev.xyz.001.pop.h.0001-01.nc` (same but monthly-averaged).
-
-- Note 1: There are other output directories, such as `/ice` (for sea ice), `/atm` (for atmosphere), etc.
-- Note 2: There is a `.../archive/gdev.xyz.001/rest/` subdirectory containing files for restarting the model or starting a branch run.
-
-### Starting a new CESM simulation (and use git to version-control it)
+## Starting a new CESM simulation (and use git to version-control it)
 
 1. If it is your first ever run, fork this repository on github (click the "Fork" button button at the top of this webpage) and clone your fork somewhere on your laptop.
     I recommend making a `Projects` directory in your laptop's `$HOME` directory and cloning repositories there.
@@ -131,13 +107,13 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
     ```
 
 1. For each new run, make a new local directory on your laptop called `xyz.abc`, except replace `xyz` with your initials and `abc` with the run number.
-    For example my first run was `bp.001`.
+    For example my first run was `bp.001`, and I created it in this git repository.
 
 1. Copy `xyz.abc_12_12.slurm` from `SampleNotes` to your `xyz.abx` directory, rename it and edit lines 6 and 22 to change the job name and the directory path.
     (The `SampleNotes` directory is part of this repository - I copied it from greenplanet for convenience - see details about the files it contains below if you want.)
     For example in my case and for my first run, the slurm file is renamed to `bp.001_12_12.slurm` and this is what the two lines look like after editing:
 
-    ```
+    ```bash
     #SBATCH --job-name=bp.001
     cd /DFS-L/SCRATCH/moore/pasquieb/cesm_runs/bp.001
     ```
@@ -147,7 +123,7 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
 1. Copy `NOTES_12_12` (from `SampleNotes`), and edit `CCSMUSER`, the job name, and the length of the run (the number of months).
     For example, for my first run (`bp.001`) I have the following lines 5, 6, and 45:
 
-    ```
+    ```tcsh
     setenv CCSMUSER             pasquieb
     setenv CASE_DST             bp.001
     ./xmlchange -file env_run.xml -id STOP_N      -val 1200
@@ -156,44 +132,55 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
 
 1. Open another CLI and connect via `ssh` to `gplogin2.ps.uci.edu` (`gplogin1` and `gplogin3` go to the old machine).
     I personnaly have added the following to my laptop's `.bashrc`:
-    ```
+    ```bash
     gp2='ssh USERID@gplogin2.ps.uci.edu'
     ```
     so that I connect to `gplogin2` by simply typing in my laptop's CLI terminal:
-    ```
-    $ gp2
+    ```bash
+    gp2
     ```
     Note: from off campus you have to connect using a VPN, see www.libraries.uci.edu, click on button on upper left of page that says "Connect from Off Campus" and install the VPN software on your home PC.
     **DO NOT** download any illegal content while on the VPN! (music, movies, etc. - UCI will notice!)
 
-1. Copy-paste the following in the CLI prompt to load the modules for the compilers, to read and write netcdf files, and to use IDL:
+1. If it is your first ever run, you need to create those directories in your own `SCRATCH` space on Greenplanet.
+    Go ahead and `mkdir` those if they do not exist yet:
+    ```bash
+    /DFS-L/SCRATCH/moore/USERID/
+      ├── IRF_runs
+      ├── cesm_runs
+      ├── archive
+      ...
     ```
+
+
+1. Copy-paste the following in the CLI prompt to load the modules for the compilers, to read and write NetCDF files, and to use IDL:
+    ```bash
     module load intel/2018.2 openmpi/3.0.1 netcdf/4.6.1
     ml idl
     ```
     Ideally this would go in a dotfile in your setup so that there is no need to load these modules every single time.
     (Although it might be good for remembering what you are actualling using?)
 
-1. Copy the contents your edited `NOTES_12_12` and paste them in greenplanet file to build, compile, and run your first job.
+1. Copy the contents your edited `NOTES_12_12` and paste them in Greenplanet file to build, compile, and run your first job.
     Do not plot right away as you need to setup the directories for plotting (right?).
 
-1. Then, copy your newly named and edited batch script `xyz.abc_12_12.slurm` from your laptop to this new `xyz.abc` directory on greenplanet.
+1. Then, copy your newly named and edited batch script `xyz.abc_12_12.slurm` from your laptop to this new `xyz.abc` directory on Greenplanet.
     (This could probably be improved by using git for it?)
     I personnaly have a function for that in my local .bashrc that looks like
-    ```
+    ```bash
     function cp2gp2_cesmruns() # Copy to greenplanet cesm_runs (via gplogin2)
     {
       scp -r $1 pasquieb@gplogin2.ps.uci.edu:/DFS-L/SCRATCH/moore/pasquieb/cesm_runs/$2
     }
     ```
     so that I only need to type
-    ```
+    ```bash
     cp2gp2_cesmruns xyz.abc_12_12.slurm xyz.abc/
     ```
 
 
 1. Once your job has been submitted, you can directly type the following in the console:
-    - `squeue` to list all jobs currently running on greenplanet
+    - `squeue` to list all jobs currently running on Greenplanet
     - `squeue –u jkmoore` to list all jobs submitted by `jkmoore` currently running (`u` is for user)
     - `squeue –q moore_fast6` to list all jobs in the `moore_fast6` (outdated!) queue. The output at command line should look like:
 
@@ -211,7 +198,7 @@ You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.
         `./gdev.jkm.001.submit`
 
 
-Other info: 
+Other info:
 
 1. Copy the sample files to your newly created `xyz.abc` directory.
     Let me clarify what these *sample files* are.
@@ -222,13 +209,13 @@ Other info:
         This script contains code for both running the model and plotting output.
         For this first step, you should just run the model.
 
-    - `xyz.abc_12_12.slurm` the batch script you can submit to greenplanet's slurm scheduler to run CESM.
+    - `xyz.abc_12_12.slurm` the batch script you can submit to Greenplanet's slurm scheduler to run CESM.
         (More info on the slurm scheduler on greenplanet [here](https://ps.uci.edu/greenplanet/).)
         You can submit the job to the scheduler with the `sbatch` command.
         On greenplanet, on the main node, you would just type
 
-        ```
-        $ sbatch ./xyz.abc_12_12.slurm
+        ```bash
+        sbatch ./xyz.abc_12_12.slurm
         ```
 
         to submit your job.
@@ -240,8 +227,8 @@ Other info:
     - `arun_idl_gdev_001` a large number of IDL plotting routines that work on annual model output files.
         After the model has run, you can start IDL and then copy and paste individual routines from `arun_idl_gdev_001` or enter
 
-        ```
-        $ @arun_idl_gdev_001
+        ```bash
+        @arun_idl_gdev_001
         ```
 
         directly to execute all the commands in the file and plot everything.
@@ -290,7 +277,7 @@ The IDL files are in the plotting directories, e.g., `extraction.V3` and `pop4_c
 - `poplatlong_x3` finds location on ocean grid for a specific latitude/longitude.
 Usage: `poplatlong_x3,lat,lon,x,y`.
 Example: `poplatlong_x3,-10.0,140.0,x,y` will return x grid location in the variable `x`, and y location in the variable `y` (Type `print,x,y` to print the values of `x` and `y`).
-- `extract_var_file` extracts a variable from a netcdf file.
+- `extract_var_file` extracts a variable from a NetCDF file.
 
 #### How to use IDL for the model
 1. Create under your user account the directories:
@@ -298,12 +285,12 @@ Example: `poplatlong_x3,-10.0,140.0,x,y` will return x grid location in the vari
     - `/DFS-L/SCRATCH/moore/USERID/popoutx3`  and `/DFS-L/SCRATCH/moore/USERID/popoutx1` should be used to store the output plotting files (generated in the `plotdirs/`), with one subdirectory for each simulation.
 That is, for a given year of simulation, `gdev.xyz.001.yr30`.
 2. On your local machine create a directory, `/pophome/gdev.jkm.001/`, that contains all the files in my sample directory (?).
-You'll need to copy to the scripts directory on greenplanet when setting up a new simulation (?).
+You'll need to copy to the scripts directory on Greenplanet when setting up a new simulation (?).
 In this local copy of the scripts directory, will be the following files
     - `arun_idl_gdev_001` text file for running annual model output plotting routines.
     - `s_extract_gdev_001` text file for extracting the global fluxes/tracer concentrations from multiple annual output files (to look at trends).
     - `s_plot_gdev_001` text file for plotting the time series data using input files generated by `s_extract_gdev_001`.
-3. To start IDL, type `idl` in the command-line console after connecting via `ssh` to greenplanet:
+3. To start IDL, type `idl` in the command-line console after connecting via `ssh` to Greenplanet:
 
     ```
     $ idl
@@ -345,3 +332,30 @@ Thus, to to access all values of the nitrate array, you need to scroll through `
 - `/ccsm4/plotmonthx3` same as `plotmonthx3`
 - `/ccsm4/plottrendx3` same as `plottrendx3`
 - `aLogsCESMRuns` to keep a log file where you note what you modified in the code for each run, and maybe some notes on the results.
+
+
+
+### Files: data and code to run the model (outdated stuff)
+Look for them in `/gdata/mooreprimeau/CESM_CODE/CESM1.97/` (outdated!)
+- `ecosys_parms.F90` sets the values of key parameters in the model.
+- `ecosys_mod.F90`, the ecosystem/biogeochemical model code.
+The key subroutine is `ecosys_set_interior`, which updates the biogeochemical sink/source terms.
+- `namelist_defaults_pop2.xml` sets the value of some parameters at runtime, overrides values (careful!) in `ecosys_parms.F90`  (will replace `ecosys_parms` in future model versions).
+- `ocn.ecosys.setup.csh` sets up the  variables to be saved in output files.
+- `gdev.jkm.001.slurm` the main file that actually runs the model, i.e., what you submit to the job scheduler on Greenplanet.
+The number of processors listed in this file must match what you used in the `NOTES_12_12` (note: `12_12` for 12 nodes with 12 CPUs each) file to set up and compile the simulation.
+When setting up new runs you should edit the jobname, the name of the slurm script to match the new simulation name (i.e., for your second job, edit `gdev.xyz.001` into `gdev.xyz.002`), and the directory path that currently says `/DFS-L/SCRATCH/moore/USERID/cesm_runs/gdev.jkm.001.slurm` (outdated!).
+ (At NCAR this is `gdev.jkm.001.run`?).
+
+
+### Files: model-run output data (outdated)
+The model-run output data files are written in two directories, which are automatically created (outdated!)
+- `/DFS-L/SCRATCH/moore/USERID/gdev.xyz.001/run/` where the model actually runs: Initially, all output files are written to this directory.
+- `/DFS-L/SCRATCH/moore/USERID/archive/gdev.xyz.001/` long term storage of the model output and the restart files (note that the path is different from the run/ directory).
+Output files from simulations are automatically copied here at the end of the simulation.
+
+After the model has been run, the data files (NetCDF) containing the data to plot for, e.g., the ocean, are located in `/DFS-L/SCRATCH/moore/USERID/archive/gdev.xyz.001/ocn/hist/` (you can delete some files if the model run was not good as long as you take notes).
+You will mainly just use the output files with format  `gdev.xyz.001.pop.h.0001.nc` (standard annually-averaged ocean-model output files) or `gdev.xyz.001.pop.h.0001-01.nc` (same but monthly-averaged).
+
+- Note 1: There are other output directories, such as `/ice` (for sea ice), `/atm` (for atmosphere), etc.
+- Note 2: There is a `.../archive/gdev.xyz.001/rest/` subdirectory containing files for restarting the model or starting a branch run.
