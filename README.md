@@ -184,7 +184,7 @@ If you are completely new to running CESM on Greenplanet, follow these steps to 
 
 1. **Make a new local directory on your laptop**
 
-    For each new run called `xyz.abc`, except replace `xyz` with your initials and `abc` with the run number.
+    For each new run create a directory called `xyz.abc`, except replace `xyz` with your initials and `abc` with the run number.
     > For example, for my first CESM run, I created `bp.001` in this git repository, which looked like this:
     > ```bash
     > ~/Projects/Lets_play_with_CESM
@@ -194,9 +194,10 @@ If you are completely new to running CESM on Greenplanet, follow these steps to 
 
 1. **Copy and edit some files from `SampleNotesCESM1.98.1`**.
 
-    (I copied `SampleNotesCESM1.98.1` from Greenplanet to this repository for convenience.)
+    You can find `SampleNotesCESM1.98.1` in this repository, or you can find it on Greenplanet.
+    (I copied it in this repository for convenience on August 10 2018, and will update if I notice it being updated too - Maybe I will even get JKM to push to this repository or make his own eventually!)
 
-    1. Copy `gdev.001.slurm` to your `xyz.abc` directory, rename it to `xyz.abc.slurm`, and edit the following:
+    1. Copy `gdev.001.slurm` to your local `xyz.abc` directory, rename it to `xyz.abc.slurm`, and edit the following:
         - line 6 to change the job name to `xyz.abc`:
             ```bash
             #SBATCH --job-name=xyz.abc
@@ -210,10 +211,11 @@ If you are completely new to running CESM on Greenplanet, follow these steps to 
         > For example for my second run, the slurm file is renamed to `bp.002.slurm` and this is what the two lines look like after editing:
         > ```bash
         > #SBATCH --job-name=bp.002
+        > ...
         > cd /DFS-L/SCRATCH/moore/pasquieb/cesm_runs/bp.002
         > ```
 
-    1. Copy `NOTES_20_8_Startup` to your `xyz.abc` directory and edit the following:
+    1. Copy `NOTES_20_8_Startup` to your local `xyz.abc` directory and edit the following:
         - line 5 and 6 to change the values of `CCSMUSER` and `CASE_DST`:
             ```tcsh
             setenv CCSMUSER             USERID
