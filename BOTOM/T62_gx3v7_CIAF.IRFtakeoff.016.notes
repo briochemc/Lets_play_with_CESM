@@ -1,0 +1,94 @@
+# These notes assume that there exists a spun-up version of the dynamic
+# model from which this procedure will do a branch run to do the IRF takeoff.
+
+cd /glade/scratch/abardin/
+
+# ----------------------
+
+# Now build the executable with the desired configuration
+setenv CCSMROOT /glade/scratch/abardin/cesm1_2_2_1
+setenv CASE              T62_gx3v7.CIAF.v1_2_2_1.IRF.016
+setenv CASEROOT_PARENT   /glade/scratch/abardin/cesm1_2_2_1
+setenv CASEROOT          $CASEROOT_PARENT/$CASE
+setenv CODEROOT          $CASEROOT_PARENT/models
+setenv RUN_REFCASE       T62_gx3v7.CIAF.v1_2_2_1.base.006
+setenv RUN_REFDATE       0291-01-01
+
+setenv PROJECT           P36271027
+setenv irf_tracer_file   /glade/scratch/abardin/cesmX3_data/IRF_offline_transport_tracers_gx3v7_20160917.nc
+setenv irf_tracer_file_ind_start 1
+setenv IRF_MODE offline_transport 
+setenv IRF_NT 156
+
+# create case
+cd $CCSMROOT/scripts
+./create_newcase -compset CIAF -res T62_gx3v7 -mach cheyenne -case $CASEROOT
+cd $CASEROOT
+
+# prestage IC (initial conditions) to RUNDIR for branch
+ setenv RUNDIR `./xmlquery -valonly -s RUNDIR`
+ if ! (-d $RUNDIR) mkdir -p $RUNDIR
+ pushd $RUNDIR
+cp /glade/scratch/abardin/archive/$RUN_REFCASE/rest/$RUN_REFDATE-00000/* .
+popd
+
+# buildtime settings (add IRF tracer module)
+./xmlchange -file env_build.xml -id OCN_TRACER_MODULES -val "iage ecosys IRF"
+./xmlchange -file env_build.xml -id OCN_TRACER_MODULES_OPT -val "IRF_MODE=offline_transport"
+
+# ntasks should be multiples of 18; # number of hw pe will be doubled
+# POP_MXBLCKS * NTASKS_OCN must be >= number of blocks (13*29)
+./xmlchange NTASKS_ATM=18,NTASKS_LND=18,NTASKS_ICE=18,NTASKS_CPL=18,NTASKS_ROF=18,ROOTPE_ICE=0,ROOTPE_OCN=18
+./xmlchange NTASKS_OCN=162
+./xmlchange POP_AUTO_DECOMP=false,POP_BLCKX=8,POP_BLCKY=4,POP_MXBLCKS=4,POP_DECOMPTYPE=cartesian
+
+# missing mods in the model release code - 
+# originally copied from /glade/scratch/klindsay/svn_co/cesm1_2_LENS_n19_IRF/models/ocn/pop2/input_templates
+cp /glade/scratch/abardin/cesmX3_data/ocn.IRF.tavg.csh $CASEROOT_PARENT/models/ocn/pop2/input_templates/
+cp /glade/scratch/abardin/cesmX3_data/extract_ocn_tracer_module_opt.csh $CASEROOT/SourceMods/src.pop2/
+cp /glade/scratch/abardin/cesmX3_data/build-namelist $CASEROOT/SourceMods/src.pop2/
+cp /glade/scratch/abardin/cesmX3_data/namelist_definition_pop2.xml $CASEROOT/SourceMods/src.pop2/
+cp /glade/scratch/abardin/cesmX3_data/namelist_defaults_pop2.xml $CASEROOT/SourceMods/src.pop2/
+cp /glade/scratch/abardin/cesmX3_data/pop2.buildexe.csh $CASEROOT/Buildconf/ 
+cp /glade/scratch/abardin/cesmX3_data/*.F90 $CASEROOT/SourceMods/src.pop2/
+
+./cesm_setup
+
+# runtime settings for branch
+./xmlchange RUN_TYPE=branch
+./xmlchange RUN_REFCASE=$RUN_REFCASE
+./xmlchange RUN_REFDATE=$RUN_REFDATE
+./xmlchange GET_REFCASE=FALSE
+
+# read IRF tracers from 64bit netCDF3 version of file, as opposed to netCDF4 w/ compression enabled (This was done one time, to get file to cesmX3_data)
+# this enables usage of PIO_TYPENAME=pnetcdf
+# ncks -O --fl_fmt=64bit /glade/p/cesmdata/cseg/inputdata/ocn/pop/gx3v7/ic/IRF_offline_transport_tracers_gx3v7_20150313.nc /glade/scratch/abardin/cesmX3_data/IRF_offline_transport_tracers_gx3v7_20160917.nc
+#cat >> user_nl_pop2 << EOF
+# irf_tracer_file ='/glade/scratch/abardin/cesmX3_data/IRF_offline_transport_tracers_gx1v6_20160917.nc'
+#EOF
+
+# qcmd for resource-intensive tasks, such as CESM builds: single node on cheyenne
+qcmd -- ./$CASE.build
+
+# load-balance testing
+# ./xmlchange STOP_OPTION=ndays,STOP_N=28,RESUBMIT=0,REST_OPTION=never,DOUT_S=FALSE,COMP_RUN_BARRIERS=TRUE
+#./$CASE.submit
+
+# production run, 20 years in 1 20-year submissions (change STOP_N)
+./xmlchange STOP_OPTION=nyears,STOP_N=20,RESUBMIT=0,REST_OPTION='$STOP_OPTION',REST_N=10,DOUT_S=TRUE,COMP_RUN_BARRIERS=FALSE
+
+# MANUALLY EDIT .run file for time limit
+
+# if there are recording changes needed:  (defaults will collect monthly IRF) 
+#cp $CODEROOT/ocn/pop2/input_templates/ocn.*.tavg.csh $CASEROOT/SourceMods/src.pop2/
+#cd $CASEROOT/SourceMods/src.pop2/
+# edit tavg values to get desired output rates
+# for monthly output
+
+# if this script is for running a fully coupled model,
+# edit user_nl_cam to remove h2 files (rm fincl3, cut nhtfrq, mmilt to 2 values) 
+ 
+cd $CASEROOT
+./*.submit
+
+ 
