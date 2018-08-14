@@ -11,8 +11,12 @@ This repository will serve me and hopefully others as I learn how to use CESM, e
   * [Running CESM and plotting data (incomplete - don't read yet)](#running-cesm-and-plotting-data-incomplete---dont-read-yet)
 * [Directory structures](#directory-structures)
 * [Starting a new CESM simulation (and use git to version-control it)](#starting-a-new-cesm-simulation-and-use-git-to-version-control-it)
-  * [Prerequisites](#prerequisites)
-  * [Setting up, building, and running CESM](#setting-up-building-and-running-cesm)
+* [Checking jobs that are running on Greenplanet](#checking-jobs-that-are-running-on-greenplanet)
+* [Building Offline Transport Operators (Matrices) from CESM's POP2 Circulation](#building-offline-transport-operators-matrices-from-cesms-pop2-circulation)
+* [MATLAB Build Ops File Organization](#matlab-build-ops-file-organization)
+* [Notes on building the IRF masks](#notes-on-building-the-irf-masks)
+  * [Notes on changes going from v1.0 to v1.2](#notes-on-changes-going-from-v10-to-v12)
+  * [References:](#references)
 * [Other info (needed here?)](#other-info-needed-here)
   * [Other files (not sure what this is - have not used it yet)](#other-files-not-sure-what-this-is---have-not-used-it-yet)
   * [Plotting](#plotting)
@@ -122,113 +126,133 @@ In your own `SCRATCH` space on Greenplanet will be the following directories.
 
 ## Starting a new CESM simulation (and use git to version-control it)
 
-### Prerequisites
+<details><summary>Prerequisites if you are completely new to running CESM</summary>
+<p>
 
-If you are completely new to running CESM on Greenplanet, follow these steps to set yourself up and running.
+> If you are completely new to running CESM on Greenplanet, follow these steps to set yourself up and running.
+>
+> 1. **Use git for your CESM runs** (Recommended but not mandatory).
+>
+>     1. Fork this repository on github (click the "Fork" button button at the top of this webpage)
+>
+>     1. Clone your fork somewhere on your laptop by opening a terminal in appropriate directory and typing
+>         ```bash
+>         cd PATH_WHERE_YOU_WANT_THE_REPOSITORY
+>         git clone https://github.com/YOUR_GITHUB_ID/Lets_play_with_CESM.git
+>         ```
+>
+>         <details><summary>Additional recommendation</summary>
+>         <p>
+>
+>         > You can make a `Projects` directory in your laptop's `$HOME` directory, so that you have a single place where you clone all your repositories.
+>         > In my case, I just typed:
+>         >
+>         > ```bash
+>         > cd ~/Projects
+>         > git clone https://github.com/briochemc/Lets_play_with_CESM.git
+>         > ```
+>
+>         </p>
+>         </details>
+>
+>
+>
+> 1. **Connect to Greenplanet** via `ssh` using `gplogin2` (`gplogin1` and `gplogin3` go to the old machine) by opening a terminal and typing:
+>     ```bash
+>     ssh USERID@gplogin2.ps.uci.edu
+>     ```
+>     Note: from off campus you have to connect using a VPN, see www.libraries.uci.edu, click on button on upper left of page that says "Connect from Off Campus" and install the VPN software on your home PC.
+>     **DO NOT** download any illegal content while on the VPN! (music, movies, etc. - UCI will notice!)
+>
+>     <details><summary>Additional recommendation</summary>
+>     <p>
+>
+>     > I recommend adding an alias on your laptop to facilitate ssh connections.
+>     > In my case, I added the following line to my laptop's `.bashrc`:
+>     >
+>     > ```bash
+>     > gp2='ssh pasquieb@gplogin2.ps.uci.edu'
+>     > ```
+>     >
+>     > Then I can connect to `gplogin2` by simply typing
+>     >
+>     > ```bash
+>     > gp2
+>     > ```
+>     >
+>     > in my laptop's terminal.
+>
+>     </p>
+>     </details>
+>
+> 1. **Create the `run` directories** in your `SCRATCH` space on Greenplanet.
+>     You will need those directories to exist:
+>     ```bash
+>     /DFS-L/SCRATCH/moore/USERID/
+>      ├── cesm_runs
+>      ├── archive
+>      ├── IRF_runs
+>       ...
+>     ```
+>     So if they do not exist yet, just type
+>     ```bash
+>     cd /DFS-L/SCRATCH/moore/USERID/
+>     mkdir cesm_runs
+>     mkdir archive
+>     mkdir IRF_runs
+>     ```
 
-1. **Use git for your CESM runs** (Recommended but not mandatory).
+</details>
+</p>
 
-    1. Fork this repository on github (click the "Fork" button button at the top of this webpage)
-
-    1. Clone your fork somewhere on your laptop by opening a terminal in appropriate directory and typing
-        ```bash
-        cd PATH_WHERE_YOU_WANT_THE_REPOSITORY
-        git clone https://github.com/YOUR_GITHUB_ID/Lets_play_with_CESM.git
-        ```
-
-        > [Additional recommendation] You can make a `Projects` directory in your laptop's `$HOME` directory, so that you have a single place where you clone all your repositories.
-        > In my case, I just typed:
-        > ```bash
-        > cd ~/Projects
-        > git clone https://github.com/briochemc/Lets_play_with_CESM.git
-        > ```
-
-1. **Connect to Greenplanet** via `ssh` using `gplogin2` (`gplogin1` and `gplogin3` go to the old machine) by opening a terminal and typing:
-    ```bash
-    ssh USERID@gplogin2.ps.uci.edu
-    ```
-    Note: from off campus you have to connect using a VPN, see www.libraries.uci.edu, click on button on upper left of page that says "Connect from Off Campus" and install the VPN software on your home PC.
-    **DO NOT** download any illegal content while on the VPN! (music, movies, etc. - UCI will notice!)
-    > [Additional recommendation]
-    > I recommend adding an alias on your laptop to facilitate ssh connections.
-    > In my case, I added the following line to my laptop's `.bashrc`:
-    > ```bash
-    > gp2='ssh pasquieb@gplogin2.ps.uci.edu'
-    > ```
-    > Then I can connect to `gplogin2` by simply typing
-    > ```bash
-    > gp2
-    > ```
-    > in my laptop's terminal.
-
-1. **Create the `run` directories** in your `SCRATCH` space on Greenplanet.
-    You will need those directories to exist:
-    ```bash
-    /DFS-L/SCRATCH/moore/USERID/
-     ├── cesm_runs
-     ├── archive
-     ├── IRF_runs
-      ...
-    ```
-    So if they do not exist yet, just type
-    ```bash
-    cd /DFS-L/SCRATCH/moore/USERID/
-    mkdir cesm_runs
-    mkdir archive
-    mkdir IRF_runs
-    ```
-
-
-
-### Setting up, building, and running CESM
 
 1. **Make a new local directory on your laptop**
 
     For each new run create a directory called `xyz.abc`, except replace `xyz` with your initials and `abc` with the run number.
-    > For example, for my first CESM run, I created `bp.001` in this git repository, which looked like this:
+
+    <details><summary>Example</summary>
+    <p>
+
+    > For my first CESM run, I created `bp.001` in this git repository, which looked like this:
+    >
     > ```bash
     > ~/Projects/Lets_play_with_CESM
     >   ├── README.md
     >   └── bp.001
     > ```
 
+    </p>
+    </details>
+
 1. **Copy and edit some files from `SampleNotesCESM1.98.1`**.
 
     You can find `SampleNotesCESM1.98.1` in this repository, or you can find it on Greenplanet.
     (I copied it in this repository for convenience on August 10 2018, and will update if I notice it being updated too - Maybe I will even get JKM to push to this repository or make his own eventually!)
 
-    1. Copy `gdev.001.slurm` to your local `xyz.abc` directory, rename it to `xyz.abc.slurm`, and edit the following:
-        - line 6 to change the job name to `xyz.abc`:
-            ```bash
-            #SBATCH --job-name=xyz.abc
-            ```
-        - line 22 to change the directory path to `/DFS-L/SCRATCH/moore/USERID/cesm_runs/xyz.abc` (change both `USERID` and `xyz.abc`):
-            ```bash
-            cd /DFS-L/SCRATCH/moore/USERID/cesm_runs/xyz.abc
-            ```
+    1. Copy `gdev.001.slurm` to your local `xyz.abc` directory, rename it to `xyz.abc.slurm`, and edit the job name to `xyz.abc` and the directory path to `/DFS-L/SCRATCH/moore/USERID/cesm_runs/xyz.abc`.
         This slurm file that you just edited will be used to submit the job (of running CESM) to the slurm scheduler on Greenplanet.
 
-        > For example for my second run, the slurm file is renamed to `bp.002.slurm` and this is what the two lines look like after editing:
+        <details><summary>Example</summary>
+        <p>
+
+        > For my second run, the slurm file is renamed to `bp.002.slurm` and this is what the two lines look like after editing:
+        >
         > ```bash
         > #SBATCH --job-name=bp.002
         > ...
         > cd /DFS-L/SCRATCH/moore/pasquieb/cesm_runs/bp.002
         > ```
 
-    1. Copy `NOTES_20_8_Startup` to your local `xyz.abc` directory and edit the following:
-        - line 5 and 6 to change the values of `CCSMUSER` and `CASE_DST`:
-            ```tcsh
-            setenv CCSMUSER             USERID
-            setenv CASE_DST             xyz.abc
-            ```
-        - lines 45 to 49 to change, e.g., the number of months you will run CESM for (not sure this is correct)
-            ```tcsh
-            ./xmlchange -file env_run.xml -id STOP_OPTION -val nmonth
-            ```
+        </p>
+        </details>
 
+    1. Copy `NOTES_20_8_Startup` to your local `xyz.abc` directory and edit the values of `CCSMUSER` and `CASE_DST` to your user ID and case name.
+        You can also edit the number of months to run CESM for at the end of the file.
 
+        <details><summary>Example</summary>
+        <p>
 
-        > For example, for my second run (`bp.002`) I have the following lines 5, 6, and 46:
+        > For my second run (`bp.002`) I have the following lines 5, 6, and 46:
         >
         > ```tcsh
         > setenv CCSMUSER             pasquieb
@@ -237,17 +261,16 @@ If you are completely new to running CESM on Greenplanet, follow these steps to 
         > ./xmlchange -file env_run.xml -id STOP_N      -val 12
         > ```
 
-
+        </p>
+        </details>
 
 1. **Connect to Greenplanet and load the compilers and modules**.
 
     Simply type the following after login in to Greenplanet:
+
     ```bash
-    module load intel/2018.2 openmpi/3.0.1 netcdf/4.6.1
-    ml idl
+    ml idl intel/2018.2 openmpi/3.0.1 netcdf/4.6.1
     ```
-    > Ideally this would go in a dotfile in your setup so that there is no need to load these modules every single time.
-    > (Although it might be good for remembering what you are actualling using?)
 
 1. **Build CESM's code**
 
@@ -274,19 +297,29 @@ If you are completely new to running CESM on Greenplanet, follow these steps to 
     1. **Copy your modified slurm script to Greenplanet**
 
         Just copy your newly named and edited slurm script `xyz.abc.slurm` from your laptop to your `SCRATCH`'s `xyz.abc` run directory on Greenplanet.
+
+
+        <details><summary>Suggestion for future</summary>
+        <p>
+
         > (This could probably be improved by using git for it?)
         > I personnaly have a function for that in my local .bashrc that looks like
+        >
         > ```bash
         > function cp2gp2_cesmruns() # Copy to greenplanet cesm_runs (via gplogin2)
         > {
         >   scp -r $1 pasquieb@gplogin2.ps.uci.edu:/DFS-L/SCRATCH/moore/pasquieb/cesm_runs/$2
         > }
         > ```
+        >
         > so that I only need to type
+        >
         > ```bash
         > cp2gp2_cesmruns xyz.abc.slurm xyz.abc/
         > ```
+        >
         > This could also be improved with another function like below (not tested yet)
+        >
         > ```bash
         > function cpslurm2gp2() # Copy local xyz.abc.slurm file to greenplanet's cesm_runs/xyz.abc/ (via gplogin2)
         > {
@@ -294,35 +327,584 @@ If you are completely new to running CESM on Greenplanet, follow these steps to 
         > }
         > ```
 
+        </p>
+        </details>
+
 
 1. **Submit your job!**
 
     You can now submit your job by either copying **line 54** of the `NOTES_20_8_Startup` file and pasting it in your terminal session logged into Greenplanet or you can submit it directly by typing
+
     ```bash
     sbacth xyz.abc.slurm
     ```
+
     That's it, your job will running as soon as the slurm scheduler of Greenplanet has room for it! :thumbsup:
 
-Once your job has been submitted, you can directly type the following in the console:
-- `squeue` to list all jobs currently running on Greenplanet
-- `squeue –u USERID` to list all jobs submitted by `USERID` currently running (`u` is for user)
-- `squeue –q QUEUENAME` to list all jobs in the `QUEUENAME` queue.
-    (JKM's queues are called `nes2.8` or `sib2.9`.)
-    The output at command line should look like:
 
-    ```
-    JobID             USER       QUEUE     Jobname       NDS  ElapTime
-    99999.greenplane  jkmoore    moore     qdev.ell.001  8    1:05
-    ```
+<details><summary>Suggested change to protocol</summary>
+<p>
 
-- `scancel 99999` stops/kills the job with the ID `99999` that is running.
-    (Use the job ID you get from `qstat –u youruserid`?)
-- `sbatch ./gdev.jkm.001.slurm` submits the job to the scheduler.
-    It will go in a queue and run whenever the scheduler decides it can run.
-    (You should have already submitted your job at this point.)
-    Note: commands to use on Yellowstone are different. Example use:
-    `./gdev.jkm.001.submit`
+> [ ] Rewrite the `NOTES` files to directly use `$USER` instead of `$CCSMUSER`. 
+>     Is there is a need for defining the variable `$CCSMUSER`.
+> [ ] Automate more steps to avoid user mistakes.
+>     That is, use a script to
+>     [ ] figure out the value of `xyz.abc` (Why use `xyz` instead of `$USER`?)
+>     [ ] `mkdir` the `xyz.abc` directory
+>     [ ] `cp` the slurm file
+>     [ ] Edit the slurm file
+>     [ ] `cp` the `NOTES` file
+>     [ ] Edit the `NOTES` file
+>     [ ] Load the modules
+> [ ] Have 2 separate notes files so that the workflow becomes simpler, like (i) run setup script, (ii) make user edits, (iii) run submission script.
 
+</p>
+</details>
+
+
+## Checking jobs that are running on Greenplanet
+
+List of basic commands to type directly in the command line interface:
+- `squeue` lists all jobs currently running on Greenplanet.
+- `squeue –u USERID` lists all jobs submitted by `USERID` that are currently in the queue or running (`u` is for user).
+- `squeue –q QUEUENAME` lists all jobs in the `QUEUENAME` queue (`q` for queue).
+    Note JKM's queues are called `nes2.8` and `sib2.9`.
+- `scancel JOBID` kills the job with the ID `JOBID`.
+    (The job IDs are displayed by `squeue` commands.)
+- `sbatch SCRIPT.slurm` submits the job `SCRIPT.slurm` to the scheduler.
+    (Note: commands on Yellowstone are different: for example, `SCRIPT.submit` submits the job.)
+
+More information on the slurm workload manager can be found at https://slurm.schedmd.com.
+
+## Building Offline Transport Operators (Matrices) from CESM's POP2 Circulation
+
+It is assumed that a POP2 parent has been spun-up dynamically, and that a restart file exists.
+These instructions are for version 1.2.2.1, nominal 3° horizontal resolution.
+
+
+
+<details><summary>Reference documents</summary>
+<p>
+
+> - CESM tutorial link: http://www2.cesm.ucar.edu/events/tutorials/2014
+>
+> - CESM bulletin board: http://bb.cgd.ucar.edu/
+>
+> - CESM User’s Guide (CESM1.2 Release Series User’s Guide): http://www2.cesm.ucar.edu
+>     - select "Models" in the top selection bar
+>     - select "CESM1.2.z" under the "Supported CESM Release Versions" title
+>     - under "Model Documentation", "CESM1.2", are selectable:
+>         - User's Guide
+>         - Model Component `Namelists`
+>         - `$CASEROOT` xml files
+
+</p>
+</details>
+
+<details><summary>Directory structure as implemented on Cheyenne by AB</summary>
+<p>
+
+This is the directory structure assumed in the build scripts **as implemented on Cheyenne by AB**.
+
+```bash
+$HOME/IRF_X3/
+ ├── $CASNAME_1.notes       # command procedures to be executed to implement
+ ├── $CASNAME_2.notes       # the generation of the IRF output files
+ ...
+
+
+/SCRATCH/
+ ├── cesm1_2_2_1            # standard release (Note: different from 1_2_2?)
+ │   │
+ │   ├── models             # code, definition files
+ │   │
+ │   ├── $CASNAME_1         # (created by the build)
+ │   │   ├── CaseDocs
+ │   │   ├── env_*.xml
+ │   │   ├── *.build
+ │   │   ├── *.submit
+ │   │   ...
+ │   │
+ │   ├── $CASNAME_2         # (created by the build)
+ │   ...
+ │
+ ├── cesmX3_data            # mods, definition files for IRF
+ │
+ ├── $CASENAME_1            # built definition and run files (created by the build)
+ │
+ ├── $CASENAME_2            # built definition and run files (created by the build)
+ │
+ ...
+```
+
+</p>
+</details>
+
+
+<details><summary>Status of things as of 8/10/2018 (from AB email)</summary>
+<p>
+
+
+> My `T62_gx3v7_CIAF.IRFtakeoff.016.notes` file used on Cheyenne for the branch run to make the operators is in `/DFS-L/DATA/moore/abardin/cheyenne/IRF_X3/v1.2.2.1/`.
+>
+> This will need to be merged with JKM's notes to make the branch run with the IRF takeoff.
+>
+> **Merging the code mods**
+>
+> In `/DFS-L/DATA/moore/abardin/IRF_mods_X3v1.2.2.1/`, are 3 subdirectories that I used to merge my IRF mods and JKM's mods:
+> - `SourceMods.IRF` has the IRF mods copied from Cheyenne.
+>     It also has `List_of_MERGE_files.txt`, which lists the files for which
+>     there were versions in both `SourceMods.IRF` and `SourceMods.JKM`,
+>     and therefore had to be merged into one version in `SourceMods.JKM.IRF`.
+>
+> - `SourceMods.JKM/gdev.720/` contains JKM's mods copied from his `dev.720/run/SourceMods` directory before he continued the run.
+>     (Some files were changed when he continued the run, which is why we must get a copy of his `.notes` file that was used for the segment of the run that we are to do the IRF takeoff from, as a standard part of our procedure.)
+>
+> - `SourceMods.JKM.IRF/gdev.720/` contains the merged set of files.
+>     This is the set that will need to be applied to the branch run.
+
+
+</p>
+</details>
+
+
+1. **Make a branch run of the POP ocean model with the IRF module installed**
+
+    1. Copy to your own directory set from an existing example set
+        - Directory `/cesmX3_data/*`
+        - File `$CASENAMEx.notes` (to be modified for your new case)
+
+    2. Generate the IRF-definition file:
+        `IRF_offline_transport_tracers_grid_name.nc`
+        IFF it does not exist for the configuration to be used.
+
+        In directory `/cesmX3_data/` (copied from `/glade/p/cgd/oce/people/klindsay/cesm12_cases/IRF/`) is the script to generate the IRF definitions for offline transport in NetCDF file `gen_IRF_offline_transport.ncl`.
+        Executing the script will generate 125 IRF tracers (with `1`s and `0`s), and additional tracers for the overflow "source" and "entrainment" regions.
+        The generated IRFs are stored in NetCDF file `IRF_offline_transport_tracers_grid_name.nc`
+
+        The script should be modified for the following:
+        - output directory (`basis_function_dir`)
+             (The directory with the output impulse variables for POP v1.2 is `glade/p/cesm/bgcwg/klindsay/IRF/`)
+        - grid name (`grid_name`), valid values are `gx1v6` or `gx3v7`
+        - For other versions of POP, check also for new names for `grid_dir` and `grid_fname`, for the input grid definitions.
+        - Note that the locations for the overflow special handling, "source" and "entrainment" regions, are hard-coded in this routine.
+
+    3. Build the branch run case, with the IRF mods installed.
+
+        If there are other mods to the standard model, other than the IRF mods, they will need to be merged before both sets of mods are used in the build process.
+
+        For each `$CASENAME`, the steps and commands to set it up and run it are in the file `$CASENAME.notes`.
+        To do the IRF-build, execute a modified copy of the `*.notes` file, with a new `$CASENAME`. The `*.notes` file is scripted to be run interactively (i.e., don't copy the comments because `tcsh` does not understand them!).
+
+        `RUN_REFCASE` is physics run from which the IRF run is branched.
+        `RUN_REFDATE` is date of branching (in model time)
+        Scripts assume that restart files for `$RUN_REFCASE` at `$RUN_REFDATE` are in the directory `/$RUN_REFCASE/$RUN_REFDATE-00000`.
+
+        These definitions are set in the `*.notes` file.
+        Note that the sequence numbers on the end of the `*.notes` files do not match the numbers for the IRF build cases.
+        That is, the reference case from which the branch run is made does not have the same sequence number as the IRF-build case branch run.
+
+        For the v1.2.2.1 X3 standard code, the base run was implemented in `T62_gx3v7_CIAF.IRF.003.notes`;
+        this can be used for reference.
+        To see what restart files are available for making a branch run to do the IRF takeoff, look in the `/archive/$RUN_REFCASE/rest/`.
+
+
+        If you are running a different configuration, the number of tracers may be different, and will need to be changed:
+        - change value for `IRF_NT`
+        - change the name of the IRF definition file.
+
+        The length of run is specified by `STOP_OPTION` (`ndays`, `nmonths`, `nyears`) and `STOP_N` (integer value).
+        Runs normally require changes to the time limit in the `.run` script.
+        (The `.run` script is generated as part of the build process.)
+
+        Changes to POP's namelist, if needed, can be placed in `$CASEROOT/user_nl_pop2`, after the `$CASEROOT` directory has been generated (with some caveats listed in the top of the file).
+        This is done with following commands in `$CASE.notes` file:
+        ```tcsh
+        cat >> user_nl_pop2 << EOF
+        ...
+        EOF
+        ```
+
+        The IRF output variables are hardcoded to `tavg` stream 1 (ocn.IRF.setup.csh).
+        (For information on how to change `tavg` variables and data stream assignments, see [here](http://www.cesm.ucar.edu/models/cesm1.1/pop2/doc/faq/#nml_tavg_change_nml).)
+        Default values for 4 `tavg` controlling variables are:
+        - `tavg_freq_opt = 'nmonth' 'nday' 'once'`
+        - `tavg_freq = 1 1 1`
+        - `tavg_file_freq_opt = 'nmonth' 'nmonth' 'once'`
+        - `tavg_file_freq = 1 1 1`
+        - 1st stream is monthly averages, 1 month per file
+        - 2nd stream is daily averages, 1 month per file
+        - 3rd stream is once per run at initialization, 1 file per run.
+
+        The mechanisms for changes to the `namelist` and `tavg` names and frequencies are described in the CESM users guide (listed above).
+
+        Output of IRF variables with 5-day means, one 5-day mean per file would be achieved by appending the following lines to `user_nl_pop2`:
+        - `tavg_freq_opt = 'nday' 'nday' 'once'`
+        - `tavg_freq = 5 1 1`
+        - `tavg_file_freq_opt = 'nday' 'nmonth' 'once'`
+        - `tavg_file_freq = 5 1 1`
+
+        Modified files specific to IRF are in `/cesmX3_data/ directory`.
+        These are automatically applied in the `*.notes` scripts.
+        If you are working with a base POP model that has non-standard code or parameter settings, the base-set modifications will need to be merged with the IRF-modified code before the build is made.
+
+
+        <details><summary>List of IRF modifications</summary>
+        <p>
+
+        - `./build-namelist`
+            The directory with the unmodified version `$CCSMROOT/models/ocn/pop2/bld`.
+            This is a perl script that constructs POP's namelist file, `pop2_in`.
+            Modifications are to include `namelist` variables for `IRF_nml`, the `namelist`.
+            For IRF mods, the IRF tracer module namelist variables are:
+              - `irf_tracer_file`
+              - `IRF_MODE`
+            The generated `pop2_in` file is in `$CASEROOT/CaseDocs/pop2_in`.
+
+        - `./namelist_definition_pop2.xml`
+            The directory with the unmodified version is `$CCSMROOT/models/ocn/pop2/bld/namelist_files`.
+            This is an `.xml` file with documentation of all namelist variables.
+            Modifications are to include `IRF_nml` variables.
+
+        - `./namelist_defaults_pop2.xml`
+            The directory with the unmodified version `$CCSMROOT/models/ocn/pop2/bld/namelist_files`
+            This is an `.xml` file with default values for all namelist variables.
+            Modifications are to include defaults for `IRF_nml` variables.
+
+        - `./pop2.buildexe.csh`
+            The directory with unmodified version is `$CCSMROOT/models/ocn/pop2/bld`.
+            This is the script to build the POP2 executable.
+            Modifications are to add IRF tracers to POP's full tracer count and to make output double precision.
+
+        - `./ocn.IRF.tavg.csh`
+            This is a new file that will in future releases be placed in directory `$CCSMROOT/models/ocn/pop2/input_templates`.
+            This script generates tavg output variable names:
+            - `HDIF_EXPLICIT_3D_$var_name`
+            - `ADV_3D_$var_name`
+            - `VDC_GM`: on the bottom face of a cell.
+
+        - `./advection.F90`
+            The directory with unmodified version is `$CCSMROOT/models/ocn/pop2/source`
+            Modifications are to add `ADV_3D_` vars and positive and negative parts of velocity as variables that can be recorded using the `tavg` mechanism.
+
+        - `./baroclinic.F90`
+            The directory with unmodified version is `$CCSMROOT/models/ocn/pop2/source`.
+            Modifications are to add a new argument to `reset_passive_tracers`.
+
+        - `./hmix_gm.F90`
+            The directory with the unmodified version is `$CCSMROOT/models/ocn/pop2/source`
+            Modifications are to add `VDC_GM` `tavg` variable.
+
+        - `./horizontal_mix.F90`
+            The directory with unmodified version is `$CCSMROOT/models/ocn/pop2/source`.
+            Modifications are to add `HDIF_EXPLICIT_3D_` variables.
+
+        - `./passive_tracers.F90`
+            The directory  with unmodified version is `$CCSMROOT/models/ocn/pop2/source`.
+            Modifications are to add a call to the `IRF_mod` subroutines.
+
+        - `./IRF_mod.F90`
+            This is a new file that in future releases will be placed in directory `$CCSMROOT/models/ocn/pop2/source`.
+            Differences from prior version are:
+            - read namelist variables
+            - reading impulse variable names from impulse variable file
+            - read impulse variables from impulse variable file
+            - reset `newtime` values from `oldtime` values
+
+        (`vertical_mix.F90` is not modified
+        (`VDC_KPP_{1,2}` in the previous IRF mod set now exists in standard code now as `VDC_{T,S}`.)
+        `VDC_{T,S}` are on the bottom face of a cell.)
+
+        </details>
+        </p>
+
+    4. Run the dynamic model to generate the IRF circulation variables output.
+
+        As is mentioned in the `$CASENAME.notes`, edit the `$CASENAME.run` file to give the proper project number, the needed time limit, `jobname`.
+        Then submit the job to the queue.
+        The `$CASENAME.submit` file contains some preliminary checks before submission to the queue of `$CASENAME.run`.
+        In the `$CASENAME` directory, `/$CASENAME.submit`.
+
+        To monitor the job `qstat` gives status for all of your Cheyenne jobs.
+
+        The IRF output from the run is in `/glade/scratch/’username’/archive/$CASENAME/ocn/hist/`.
+        The processing of the IRF output to make the offline operators begins with Step 2.
+
+
+1. Build the IRF masks
+
+    The IRF mask building has been split off into a separate program because it only needs to be run once for a given configuration.
+    For the 1.2.2.1 X3 configuration the masks are saved in `/glade/p/work/abardin/IRF_masks/CESM1.2_X3/`
+
+    Note that as a convention for STEP 2 and beyond, directories are not built on the fly;
+    they must be pre-built before the execution of any of the software that puts files into them.
+
+    The definitions for the overflow source, entrainment, and product regions have been adapted from the `gx3v7_overflow` file, which is part of the standard release, and can be found in `[cesm_version]/models/ocn/pop2/input_templates/`.
+    The definition for the product region is from an edited version of the `gx3v7_overflow` file.
+
+    The source and entrainment regions are hard-coded in `build_stencils_X3.m`.
+    The product regions are read in from a text file that must be created as described in STEP 2a.
+
+    1. Make sure the MATLAB script can read the output
+
+        Edit POP source file `*_overflow`, to create `*_overflow_data.txt`, formatted so that the Matlab script can read it.
+        There are formatting and editing definitions at the end of `build_stencils_X3.m`
+
+        OR
+
+        A version of the already edited file for the X3 configuration can be found in the `IRF_masks` directory listed above.
+
+    2. Edit some files
+
+        Edit the parameters at the beginning of `build_stencils_X3.m` to define the file names and directories to access, and the "expected configuration dimensions", which is used as a check for consistency with the NetCDF output data from the model run.
+        For a new configuration, the definitions for the source and entrainment regions, which are hard-coded in `build_stencils_X3.m`, will need to be modified.
+
+    3. Execute `build_stencils_X3.m.`
+
+        The IRF masks are built, and saved in the specified directory (on Cheyenne, `/glade/p/work/IRF_masks/CESM1.2_X3`).
+        There are `NOTES` below (near the end of this document) giving additional details of the code that makes the masks.
+
+
+3. Make the transport operators
+
+    The end-product are operators `A`, `H`, `D`, `T`, plus the periodic adjustment term `dxidt`.
+    These are organized into monthly files plus an annual average file in the final directory.
+
+    The processing to achieve a monthly climatologically averaged set of operators has 2 stages:
+    - The IRF monthly output is converted into monthly operators; these are kept in `noc_dir` as building blocks for the second stage.
+    - The climatological monthly sets of operators, and the annual average set are made, together with the periodic adjustment term dxidt.
+    Doing the processing in two stages allows for various climatological averages to be made relatively easily.
+
+    In `noc_dir` directory, the month starts with the first of the first model year to be processed, and the month number continues consecutively.
+    For example, if you have 3 years worth of output files, they are numbered 1 through 36.
+
+    The final climatologically averaged operator set generated in the `ops_dir` directory contains a set of monthly operators, numbered 1 through 12, and the annual average, numbered 0.
+
+    1. Build the `noc` monthly operators from the IRF output
+        The set of operators in the `noc` directory is extracted from the IRF output, and does not have any SSH (sea surface height?) adjustment factor.
+        This processing is set up with some bash command files, such that batches of 12 months can be processed in parallel.
+        (Only 12 because of the limitation on the number of Matlab licenses available at the Cheyenne site.)
+        The procedure will not start the processing for each month unless there are plenty of spare licenses available.
+
+        1. Edit `Build_control_mo.slurm`
+            Modify the number of years to process in the statement
+
+            ```
+            for year in {1..n}; do
+            ```
+
+        1. Edit `runM[n].slurm` files.
+            Modify the reference file names.
+            These are the IRF-takeoff output files that are in the `/archive/`.
+            Modify the location of the `noc_dir`, where the unadjusted monthly operators are to go.
+            Modify the `zeroyr`, which is the year before the first year of the IRF-takeoff output.
+
+
+        1. Edit `buildMET.m` if this is a new configuration.
+            `buildMET.m` contains the definitions of the mask-outs for the marginal seas that are not included in the offline model.
+            It also contains the expected dimensions of the model, in order to check for a consistent definition.
+            `ms_buildMET.m`, which generates the geometric definitions without the marginal seas masked out, also contains the expected dimensions of the model, and must be made consistent with `buildMET.m`.
+
+        1. Execute `Build_control_mo.slurm`
+
+            ```bash
+            sbatch Build_control_mo.slurm
+            ```
+
+            This is the job control file.
+            It runs the processing of the IRF-takeoff files, making the `noc` operators monthly files, up to 12 months at a time.
+
+            Be patient - this takes awhile.
+
+            The control flow is as follows:
+
+            - `buildMET` builds the geometric data that is needed for processing the operators and/or running with them.
+                `MET` is saved in the `noc_ops` directory.
+            - `make_ops_from_IRF_output` builds the ocean-sized matrix operators (excludes land points) from the OGCM NetCDF output files.
+                The operators have not yet been adjusted to make them annually-periodic, and are thus in an intermediate state.
+                The files are output to the `noc_dir` directory.
+
+            The monthly operator sets are in files `MTM[n].mat`, where `n` runs from 1 to the last month processed.
+            Each `MTM` file contains the operators `A` (advection), `H` (horizontal diffusion), `D` (vertical diffusion), and `T` (total `T = A + H + D`).
+
+            Inputs are the netcdf history files from the dynamic model run, the IRF-masks that were made in STEP 2.
+
+        1. Build the state data files
+            The job file `runBldStateData.slurm` is to be parameterized to give the basic name for the dynamic model output files, which years, and how many years are to be processed.
+            The job executes `Build_state_data.m`, which collects selected monthly data from the dynamic model's output files, and saves it in the noc directory.
+
+    1. Generate the climatologically averaged operator set
+
+        The code for this is in the `/BUILD_FAST/[version]/multi_yr_build/` directory.
+        The control file is `BLD_multi_yr_clim_mo.slurm`.
+        In the control file are defined the `noc` directory, the final `ops` directory, which years and how-many years to use for the climatological average.
+        The final operator directory contains only monthly files that are included in the annualized average, numbered according the calendar month, and the annualized average (`MTM0.mat`).
+        The periodic adjustment has been applied to the sets of operators.
+        The state-data files are also climatologically averaged and included in the `ops` directory.
+
+        The major logic for generating the climatologically averaged operator set is in the following files:
+
+        - `make_A_periodic` computes the periodic adjustment for the surface layer from the divergence of the annual advection operator.
+            This is applied to the `A` and `T` operators for all the months in the annual set, in addition to the annual average `A` and `T`.
+            For each month, the change in sea-surface height (SSH) is calculated from the row-divergence in the surface layer grid-cells to compensate for the SSH changes during the month.
+            The term is `dxidt`, which is the change in `Xi` (dxi)` (?) per unit time (`dt`)
+            It is used when stepping the offline model through a seasonal cycle per equation (12) of *Bardin et al.* [2014].
+
+        - Mass-balance and row-divergence are checked on the resulting operators.
+            Each monthly output file contains `A`, `H`, `D`, `T`, `dxidt` at this point, in the final directory.
+            Checks are also made that each IRF pulse occurred once, and only once; and that operator fields are not on land.
+
+        - `build_model_state_data` builds `.mat` files containing `SSH`, `TEMP` (potential temperature), `PD` (potential density), `SALT` (salinity), `RHO` (in-situ density), `IFRAC` (sea-ice fraction, and other variables that are convenient to have for additional BGC processing.
+            `SSH` is used in starting up a seasonal cycle in the offline model.
+
+    1. Delete temporary files
+        Delete the files in the `tmp_mo` directory, that were used for the IRF pulse check.
+        From this point forward they are no longer needed.
+
+
+
+1. Enjoy using the offline operators.
+    An example of using the operators is given for radiocarbon in *Bardin et al.* [2014].
+
+
+## MATLAB Build Ops File Organization
+
+The files are listed by top-level-script or function, then the functions called.
+The file ending of `X1` or `X3` means they contain configuration details for the nominal 1° and 3° configurations of the POP model.
+
+- In directory `/glade/u/home/abardin/BUILD_FAST/X3_v1_2_2_1/noc_ops_build/`:
+    - `BldStencils.slurm` job control to build the IRF masks (stencils).
+
+    - `Build_stencils_X3.m`
+        Builds the `Impulse_Response_Function` (IRF) set of masks (also referred to as stencils) needed to pick up the output from the IRF dynamic parent model runs.
+        Uses in-file functions:
+        - `make_stencils_61` constructs the regular IRF masks, and those for the source and entrainment regions.
+        - `setup_stencil_bands_61` makes the X, Y, and Z bands for the POP stencils from the dimensions specified.
+        - `make_prod_stencil_61` constructs the extended masks for the product areas.
+        At the end of the `Build_stencils_X3.m` file, are the definitions for the formatting of the product regions definition file.
+
+    - `Build_control_mo.slurm` job control to build the noc operator set, with monthly processing overlapped.
+
+    - `runM[n].slurm` job control to build one month’s IRF output and create a noc monthly file.
+
+    - `Build_monthly_ops.m`
+        The purpose of `Build_montly_ops.m` is to build the advection/diffusion operators for the offline model from the history files resulting from running the POP ocean model with the "IRF tracers" turned on.
+        This script invokes functions which output files containing a sparse matrix with each operator (`A` (advection), `H` (horizontal diffusion, `D` (vertical diffusion), for each month specified in the control job.
+        The monthly files are saved in the `noc` operator directory.
+        Uses external file functions
+        - `buildMET.m` gathers the geometric data from a netcdf history file
+
+        - `make_ops_from_IRF_output.m` collects the output from the netcdf history files, and makes the operators.
+            Uses external file functions:
+            - `get_g_data.m` forms `A` and `H` operators from the regular IRF output
+            - `get_s_data.m` forms `A` and `H` operators from overflow source IRF output
+            - `get_e_data.m` forms `A` and `H` operators from overflow entrainment IRF output
+            - `get_VDC_data.m` gets vertical diffusion parameters from IRF output
+            - `Vdiff.m` makes `D` operators from `VDC` data
+            - `pulse_ck.m` checks IRF pulse locations are in all ocean grid cells, and only once for each grid cell
+            - `ck_landfall` checks that operators do not have values on land grid cells
+
+- In directory `/glade/u/home/abardin/BUILD_FAST/X3_v1_2_2_1/multi_yr_build/`
+    - `BLD_multi_yr_clim_mo.slurm` job control for making the climatologically averaged operators and state data
+
+    - `Build_multi_period.m` makes the adjustment for annual periodicity to the operators
+        Uses external file functions:
+        - `make_A_periodic.m` calculates the 2-D modification to the surface grid cells for the advection operator, to make it cyclic on an annualized basis, without divergence.
+            Uses internal file functions
+            - `mkAtilde2d` makes the annual periodic-adjustment operator for advection
+            - `grad` makes the gradient operator from the grid-cell geometry
+            - `div` makes the divergence operator from the grid-cell geometry
+            - `load_iocn_ops` loads the un-adjusted operators from the `noc` directory
+            - `display_op_div` makes displays of operator divergence (for debugging)
+
+        - `make_annual_ops.m` makes annualized average operators with the adjustment, and saves them in the ops directory
+            Uses internal file functions:
+            - `annual_avg_dmo` makes annualized average operators from the monthly ones
+
+        - `ck_ops_massb_div.m` provides mass-balance and row-sum checks
+
+    - `Build_mo_climate_state.m` builds a set of climatological monthly data files containing `SSH`, and other model data frequently needed for biogeochemical models.
+
+
+## Notes on building the IRF masks
+
+There are three types of masks used.
+Each mask deals with the possible results of one IRF source grid-cell, and the possible grid-cells that may be impacted after one timestep.
+The `g_irf_mask` is for the general case, where the impulse may have an impact on any cell within 2 grid-cells in each of the 3 dimensions.
+These masks define a 3D box with a total of 125 grid-cells, with the impulse grid-cell in the middle.
+The `s_irf_mask` defines the locations impacted from an impulse in the overflow source region.
+This includes anywhere in the source region itself, plus 2 grid-cells bordering the source region;
+specified grid-cells in the associated overflow entrainment region;
+and specified grid-cells in the associated overflow product region.
+The `e_irf_mask` is defined for the entrainment region, since it acts as an additional source.
+The `e_irf_mask` is for an impulse within the entrainment area, and includes the entrainment area, and the associated product grid-cells further down-slope.
+
+In `build_stencils_X3.m`, the parameters are defined for the general IRF masks.
+The numbers of masks are defined by `PARAM.g_imin` (1) to `PARAM.g_imax` (number of cells in the x–dimension), etc. for each dimension.
+The z-dimension has an extra layer compared to the OGCM to ensure that there is land (or air) on all boundaries.
+`PARAM.g_X_band` defines how many cells there are on each side of the subject Impulse cell in the x dimension (=2).
+This is similar for the other dimensions.
+`PARAM.g_Y_limit` (= 0) is a constraint on the Y dimension, which has no effect on the general IRF mask, but is provided for compatibility with this parameter for the source and entrainment definitions.
+
+The source and entrainment definitions are given in a format that matches that in the Fortran source code.
+Each column defines one source or associated entrainment region's location in terms of the xyz cell indices.
+The `PARAM.Y_limit` is a constraint in the y direction to assure that there is no overlap.
+All of the parameters are passed to the function `make_irf_masks`, which is in the same file.
+
+Function `make_irf_masks` first makes the regular masks, in a 2-step process.
+It uses function `setup_irf_bands` to set up a band of matrices in each dimension.
+The bands are then propagated in each direction using the kron function, which makes a matrix of matrices (the Kronecker tensor product).
+
+Function `setup_irf_bands` builds an nx by nx matrix, with bands on the diagonal that are + and – `X_band` (defined in the `PARAMs`) wide.
+The band is extended to deal with the wrap-around of the globe in the x-dimension.
+The band in the y-dimension is built in a similar manner, but with a limitation on the dimension that keeps regions from overlapping.
+This has no effect for the general IRF mask, and actually only has an effect if the definitions of the overflow regions overlap.
+A similar banded matrix is made for the z-dimension.
+
+Within function `make_irf_masks`, the overflow "source" region masks are made in a similar manner, but within the dimensions of each source region.
+The masks are extended with the "product" regions, which include areas within the associated "entrainment" region and further down-slope.
+The overflow entrainment masks are defined in a similar manner.
+
+Within function `make_irf_masks`, the product region masks are created in function `make_prod_mask`.
+This is a separate function because the product-area masks are defined in a different way.
+The locations of the product regions are determined by reading the `product_txt_file`.
+The way that the product areas are specified is somewhat convoluted;
+there are some detailed notes on the format of the file at the end of file `build_stencils_X3.m`.
+There may be several product areas associated with one overflow region, including parts of the entrainment area, and further downslope.
+A mask is created that includes all of the possible product area grid-cells for the overflow region.
+
+### Notes on changes going from v1.0 to v1.2
+
+The interface to the prognostic POP model is organized differently.
+The version 1.2 interfaces are described above.
+The output variables in the history files have the same names as much as possible, however, there are some changes:
+- For the `VDC` data, version 1.2 name `VDC_T` (for temperature) replaces v1.0 name `VDC_KPP_1` (not used for the standard operators).
+- Version 1.2 name `VDC_S` (for salinity) replaces v1.0 name `VDC_KPP_2`.
+- For both `VDC_S` and `VDC_GM`, the values given are on the BOTTOM of the cell, rather than the top.
+    The two variables need to be added together to get the total coefficient for vertical diffusion, as before.
+
+Another significant change is that the pulse locations are not output in the history file.
+Instead, they can be read from a file that was created from the definition of the pulse locations.
+For version 1.2 this is located on Cheyenne at `/glade/p/cesm/bgcwg/klindsay/IRF/IRF_offline_transport_tracers_gx1v6.nc`, and the equivalent for `gx3v7`.
+This file is copied into the output `/case_name/` directory for access when building the offline operators.
+It was found that this file has in addition to the pulses in the ocean, pulses in all the land grid-cells, which must be masked out to make the file usable.
+
+The variable `KPP_NONLOC_KERN` in version 1.0 is not recorded in the history file;
+the processing for the corresponding off-line operator has been deleted.
+
+All 178 of the tracers were captured in a single 1-year run; as opposed to the previous 7 runs required in version 1.0.
+Changes were made in `BUILD_OPS.m` and functions it uses to eliminate the number of cases required, and the file handling to extract the data.
+
+### References:
+
+Bardin, Ann, Francois Primeau, Keith Lindsay, **An offline implicit solver for simulating prebomb radiocarbon**, *Ocean Modelling* (2014)
+
+Briegleb, B.P., Danabasoglu, G., Large, W.G., 2010. **An Overflow Parameterization for the Ocean Component of the Community Climate System Model**. *NCAR Technical Note*. NCAR.
+
+Smith et al., **Parallel ocean program (POP) reference manual** (2010)
+
+Online users guide:
+CESM User’s Guide (CESM1.2 Release Series User’s Guide): http://www.cesm.ucar.edu/models/cesm1.2/cesm/doc/usersguide/x1955.html
 
 ## Other info (needed here?)
 
