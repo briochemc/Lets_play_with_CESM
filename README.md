@@ -342,21 +342,30 @@ In your own `SCRATCH` space on Greenplanet will be the following directories.
     That's it, your job will running as soon as the slurm scheduler of Greenplanet has room for it! :thumbsup:
 
 
-<details><summary>Suggested change to protocol</summary>
+<details><summary>Suggestions from BP</summary>
 <p>
 
-> [ ] Rewrite the `NOTES` files to directly use `$USER` instead of `$CCSMUSER`. 
->     Is there is a need for defining the variable `$CCSMUSER`.
-> [ ] Automate more steps to avoid user mistakes.
->     That is, use a script to
->     [ ] figure out the value of `xyz.abc` (Why use `xyz` instead of `$USER`?)
->     [ ] `mkdir` the `xyz.abc` directory
->     [ ] `cp` the slurm file
->     [ ] Edit the slurm file
->     [ ] `cp` the `NOTES` file
->     [ ] Edit the `NOTES` file
->     [ ] Load the modules
-> [ ] Have 2 separate notes files so that the workflow becomes simpler, like (i) run setup script, (ii) make user edits, (iii) run submission script.
+> - [ ] Rewrite the `NOTES` files to directly use `$USER` instead of `$CCSMUSER`.
+>     Is there is a need for defining the variable `$CCSMUSER` in the first place?
+>
+> - [ ] Automate more steps to avoid user mistakes.
+>     That is, use a bash script to
+>
+>     - [ ] figure out the value of `xyz.abc` (Why use `xyz` instead of `$USER`?)
+>     - [ ] `mkdir` the `xyz.abc` directory
+>     - [ ] `cp` the slurm file
+>     - [ ] Edit the slurm file
+>     - [ ] `cp` the `NOTES` file
+>     - [ ] Edit the `NOTES` file
+>     - [ ] Load the modules
+>
+>     The bash script would then be simply run via
+>
+>     ```bash
+>     bash bash_script
+>     ```
+>
+> - [ ] Have 2 separate notes files so that the workflow becomes simpler, like (i) run setup script, (ii) make user edits, (iii) run submission script.
 
 </p>
 </details>
