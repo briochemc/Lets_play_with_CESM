@@ -470,24 +470,31 @@ $HOME/IRF_X3/
 
 1. **Make a branch run of the POP ocean model with the IRF module installed**
 
-    1. Copy to your own directory set from an existing example set
+    1. **Copy to your own directory set from an existing example set**
         - Directory `/cesmX3_data/*`
         - File `$CASENAMEx.notes` (to be modified for your new case)
 
-    2. Generate the IRF-definition file:
-        `IRF_offline_transport_tracers_grid_name.nc`
-        IFF it does not exist for the configuration to be used.
+    2. **If it does not exist, build `IRF_offline_transport_tracers_grid_name.nc`**
 
-        In directory `/cesmX3_data/` (copied from `/glade/p/cgd/oce/people/klindsay/cesm12_cases/IRF/`) is the script to generate the IRF definitions for offline transport in NetCDF file `gen_IRF_offline_transport.ncl`.
-        Executing the script will generate 125 IRF tracers (with `1`s and `0`s), and additional tracers for the overflow "source" and "entrainment" regions.
-        The generated IRFs are stored in NetCDF file `IRF_offline_transport_tracers_grid_name.nc`
+        (It should be in `cesmX3_data/`, but not in this repo since it is a NetCDF file)
 
-        The script should be modified for the following:
-        - output directory (`basis_function_dir`)
-             (The directory with the output impulse variables for POP v1.2 is `glade/p/cesm/bgcwg/klindsay/IRF/`)
-        - grid name (`grid_name`), valid values are `gx1v6` or `gx3v7`
-        - For other versions of POP, check also for new names for `grid_dir` and `grid_fname`, for the input grid definitions.
-        - Note that the locations for the overflow special handling, "source" and "entrainment" regions, are hard-coded in this routine.
+        <details><summary>How to build `IRF_offline_transport_tracers_grid_name.nc`</summary>
+        <p>
+
+        > There is a NCL script, `gen_IRF_offline_transport.ncl` in `cesmX3_data` (on AB's copy from `/glade/p/cgd/oce/people/klindsay/cesm12_cases/IRF/`) which can be used to generate this NetCDF file.
+        > Executing the script will generate 125 IRF tracers (with `1`s and `0`s), and additional tracers for the overflow "source" and "entrainment" regions.
+        > The generated IRFs are stored in NetCDF file `IRF_offline_transport_tracers_grid_name.nc`
+        >
+        > The script should be modified for the following:
+        >
+        > - output directory (`basis_function_dir`)
+        >      (The directory with the output impulse variables for POP v1.2 is `glade/p/cesm/bgcwg/klindsay/IRF/`)
+        > - grid name (`grid_name`), valid values are `gx1v6` or `gx3v7`
+        > - For other versions of POP, check also for new names for `grid_dir` and `grid_fname`, for the input grid definitions.
+        > - Note that the locations for the overflow special handling, "source" and "entrainment" regions, are hard-coded in this routine.
+
+        </details>
+        </p>
 
     3. Build the branch run case, with the IRF mods installed.
 
